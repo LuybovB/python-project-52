@@ -15,6 +15,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+load_dotenv()
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,9 +83,12 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+DATABASE_URL = os.environ["DATABASE_URL"]
+
 DATABASES = {
-    'default': dj_database_url.parse('https://dashboard.render.com/d/dpg-cp2hb8mv3ddc73cma7v0-a')
+    'default': dj_database_url.config(DATABASE_URL),
 }
+
 
 
 # Password validation
