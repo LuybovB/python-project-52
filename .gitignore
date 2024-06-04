@@ -4,3 +4,4 @@
 venv/
 build.sh
 .idea/
+.static/
