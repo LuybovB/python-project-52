@@ -1,1 +1,1 @@
-web: python -m /path/to/your/virtualenv/bin/gunicorn task_manager.asgi:application -k uvicorn.workers.UvicornWorker
+web: python -m uvicorn task_manager.asgi:application --host 0.0.0.0 --port $PORT
