@@ -1,1 +1,1 @@
-web: python -m uvicorn task_manager.asgi:application --host 0.0.0.0 --port $PORT
+web: python manage.py collectstatic && python manage.py migrate && gunicorn task_manager.wsgi
