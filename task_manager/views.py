@@ -12,12 +12,14 @@ class IndexView(TemplateView):
     }
 
 
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Перенаправляем на страницу входа после регистрации
+            # Здесь можно добавить логику для автоматического входа пользователя или перенаправления
+            return redirect('index')  # Предполагается, что 'index' - это имя вашего URL для главной страницы
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
