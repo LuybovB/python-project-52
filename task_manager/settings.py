@@ -54,9 +54,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # Удален дублирующийся 'django.middleware.security.SecurityMiddleware'
 ]
+
 
 ROOT_URLCONF = 'task_manager.urls'
 
@@ -128,9 +129,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'DEBUG=Truestatic/'
+# Включите режим отладки только если вы разрабатываете приложение
+DEBUG = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# URL для обслуживания статических файлов
+STATIC_URL = '/static/'
+
+# Путь к каталогу, где collectstatic будет собирать статические файлы
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
@@ -143,3 +151,12 @@ if not DEBUG:    # Tell Django to copy static assets into a path called `staticf
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LANGUAGE_CODE = 'ru'
+USE_I18N = True
+USE_L10N = True
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]

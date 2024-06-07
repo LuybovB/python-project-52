@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <!-- Обновленная ссылка на тему Minty Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/minty/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <title>Task manager</title>
+    <title>{% trans 'Task manager' %}</title>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav>{% include 'nav.html' %}</nav>
@@ -21,7 +22,7 @@
     {% endblock %}
     <footer class="footer mt-auto py-3 bg-light" style="color: #000;">
         <div class="container">
-            <a href="https://ru.hexlet.io/" class="text-muted" style="float:left;">Hexlet</a>
+            <a href="https://ru.hexlet.io/" class="text-muted" style="float:left;">{% trans 'Hexlet' %}</a>
         </div>
     </footer>
 </body>

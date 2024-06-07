@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{% trans 'Регистрация' %}</h2>
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_first_name" class="form-label">{% trans 'Имя' %}:</label>
+                            <input type="text" class="form-control" name="first_name" placeholder="{% trans 'Имя' %}" required id="id_first_name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_last_name" class="form-label">{% trans 'Фамилия' %}:</label>
+                            <input type="text" class="form-control" name="last_name" placeholder="{% trans 'Фамилия' %}" required id="id_last_name">
+                        </div>
+<div class="mb-3">
+    <label for="id_username" class="form-label">{% trans 'Имя пользователя' %}:</label>
+    <input type="text" class="form-control" name="username" placeholder="{% trans 'Имя пользователя' %}" required id="id_username">
+    <small id="usernameHelp" class="form-text text-muted">{% trans 'Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.' %}</small>
+</div>
+
+                        <div class="mb-3">
+    <label for="id_password" class="form-label">{% trans 'Пароль' %}:</label>
+    <input type="password" class="form-control" name="password" placeholder="{% trans 'Пароль' %}" required id="id_password">
+    <small id="passwordHelp" class="form-text text-muted">• {% trans 'Ваш пароль должен содержать как минимум 3 символа.' %}</small>
+</div>
+                        <div class="mb-3">
+    <label for="id_password2" class="form-label">{% trans 'Подтверждение пароля' %}:</label>
+    <input type="password" class="form-control" name="password2" placeholder="{% trans 'Подтвердите пароль' %}" required id="id_password2">
+    <small id="password2Help" class="form-text text-muted">{% trans 'Для подтверждения введите, пожалуйста, пароль ещё раз.' %}</small>
+</div>
+                        <button type="submit" class="btn btn-primary w-100">{% trans 'Зарегистрировать' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

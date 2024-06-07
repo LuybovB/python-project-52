@@ -1,21 +1,23 @@
-
-
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#" style="color: #000;">Менеджер задач</a>
+    <a class="navbar-brand" href="#" style="color: #000;">{% trans 'Менеджер задач' %}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color: #343a40;">Пользователи</a>
+          <a class="nav-link" href="#" style="color: #343a40;">{% trans 'Пользователи' %}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color: #343a40;">Вход</a>
+          <a class="nav-link" href="#" style="color: #343a40;">{% trans 'Вход' %}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color: #343a40;">Регистрация</a>
+          <a class="nav-link" href="{% url 'register' %}" style="color: #343a40;">{% trans 'Регистрация' %}</a>
+
         </li>
       </ul>
     </div>
