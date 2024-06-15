@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+
 import os
+
 import sys
 
 
@@ -16,6 +18,11 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+
+
+def get_input_data(message):
+    raw_value = input(message).encode('utf-8')
+    return raw_value.decode('utf-8')
 
 
 if __name__ == '__main__':

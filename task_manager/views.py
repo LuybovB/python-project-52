@@ -11,6 +11,7 @@ class IndexView(TemplateView):
         'header': _('Task manager'),
     }
 
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)

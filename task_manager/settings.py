@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import dj_database_url
 load_dotenv()
 
-
+DEFAULT_CHARSET = 'utf-8'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -83,23 +83,18 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASE_URL = os.environ["DATABASE_URL"]
-
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-if os.getenv('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+db_from_env = dj_database_url.config(conn_max_age=500)
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = 'task_manager.CustomUser'
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -158,7 +153,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGE_CODE = 'ru'
 USE_I18N = True
 USE_L10N = True
-
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
