@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
 from .forms import CustomUserCreationForm
 from django.shortcuts import render, redirect
+from .models import CustomUser
 
 
 class IndexView(TemplateView):
@@ -21,3 +22,8 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
+
+def user_list(request):
+    users = CustomUser.objects.all()
+    return render(request, 'users/users.html', {'users': users})
