@@ -52,3 +52,8 @@ class CustomUserCreationForm(forms.ModelForm):
         if password and password2 and password != password2:
             raise forms.ValidationError(_('Пароли не совпадают'))
         return password2
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Имя пользователя')
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput())
