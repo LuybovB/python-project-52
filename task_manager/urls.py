@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import IndexView, register, user_list, login_view, logout_view
+from .views import IndexView, register, user_list, login_view, logout_view, user_update_view, user_delete_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,12 @@ urlpatterns = [
     path('users/', user_list, name='user-list'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    # Страница редактирования пользователя
+    path('users/<int:pk>/update/', user_update_view, name='user_update'),
+
+    # Обновление пользователя
+    path('users/<int:pk>/delete/', user_delete_view, name='user_delete'),
+
+    # Страница удаления пользователя
+    path('users/<int:pk>/delete/', user_delete_view, name='user_delete'),
 ]

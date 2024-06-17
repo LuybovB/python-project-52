@@ -5,23 +5,25 @@
 {% block content %}
     <h1>Пользователи</h1>
     <div class="table-responsive">
-    <table class="table table-bordered table-hover text-nowrap" data-test="urls">
-    <tr>
-        <th>ID</th>
-        <th>Имя пользователя</th>
-        <th>Полное имя</th>
-        <th>Дата создания</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.get_full_name }}</td>
-        <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
-    </tr>
-    {% endfor %}
-</table>
-</div>
-
-
+        <table class="table table-bordered table-hover text-nowrap" data-test="urls">
+            <tr>
+                <th>ID</th>
+                <th>Имя пользователя</th>
+                <th>Полное имя</th>
+                <th>Дата создания</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.get_full_name }}</td>
+                    <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'user_update' user.id %}" class="btn btn-primary d-block mb-2">Редактировать</a>
+                        <a href="{% url 'user_delete' user.id %}" class="btn btn-danger d-block">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

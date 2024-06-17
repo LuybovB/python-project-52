@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="display-4">{% trans 'Удаление пользователя' %}</h1>
+    <p>{% trans 'Вы уверены, что хотите удалить' %} "{{ user }}"?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">{% trans 'Да, удалить' %}</button>
+    </form>
+</div>
+
+{% endblock %}
