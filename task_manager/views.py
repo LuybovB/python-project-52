@@ -22,6 +22,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            messages.success(request, 'Пользователь успешно зарегистрирован')
             user.is_active = True
             user.save()
             username = form.cleaned_data.get('username')
@@ -53,16 +54,21 @@ def login_view(request):
             print(f"Пользователь {'не ' if user is None else ''}аутентифицирован")  # Для отладки
             if user is not None:
                 login(request, user)
+                messages.success(request, 'Вы загологинены')
                 return redirect('root')
             else:
                 form.add_error(None, 'Неверное имя пользователя или пароль')
     else:
+
         form = LoginForm()
+
     return render(request, 'users/login.html', {'form': form})
+
 
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'Вы Разлогинены')
     return redirect('root')  # Указать желаемый URL вместо 'root'
 
 
