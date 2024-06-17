@@ -95,6 +95,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = 'task_manager.CustomUser'
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 
 AUTH_PASSWORD_VALIDATORS = [

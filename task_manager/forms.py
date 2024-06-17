@@ -1,8 +1,9 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from .models import CustomUser
 
-
+# Форма для создания нового пользователя, наследуемая от UserCreationForm
 class CustomUserCreationForm(forms.ModelForm):
     first_name = forms.CharField(
         label=_('Имя'),
@@ -32,28 +33,25 @@ class CustomUserCreationForm(forms.ModelForm):
         help_text=_('Для подтверждения введите, пожалуйста, пароль ещё раз.'),
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Подтверждение пароля')}))
 
-    class Meta:
-        model = CustomUser  # Укажите здесь вашу модель пользователя
-        fields = ('first_name', 'last_name', 'username', 'password', 'password2')
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'username')
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data["password"]
+        user.set_password(password)
+        if commit:
+            user.save()
+        return user
 
-
-    def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].help_text = '<span style="font-size: smaller;">{}</span>'.format(self.fields['username'].help_text)
-        self.fields['password'].help_text = '<span style="font-size: smaller;">{}</span>'.format(self.fields['password'].help_text)
-        self.fields['password2'].help_text = '<span style="font-size: smaller;">{}</span>'.format(self.fields['password2'].help_text)
-
-
-
-    def clean_password2(self):
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-        if password and password2 and password != password2:
-            raise forms.ValidationError(_('Пароли не совпадают'))
-        return password2
-
-
+# Форма для входа пользователя
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Имя пользователя')
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput())
+    username = forms.CharField(
+        label=_('Имя пользователя'),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Имя пользователя')})
+    )
+    password = forms.CharField(
+        label=_('Пароль'),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Пароль')})
+    )

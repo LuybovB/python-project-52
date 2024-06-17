@@ -15,9 +15,17 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('root')  # Указать желаемый URL вместо 'root'
+            user = form.save(commit=False)
+            user.is_active = True
+            user.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('root')  # Указать желаемый URL вместо 'desired_page'
+            else:
+                return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
@@ -34,10 +42,12 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
+            print(f"Попытка входа для пользователя: {username}")  # Для отладки
             user = authenticate(request, username=username, password=password)
+            print(f"Пользователь {'не ' if user is None else ''}аутентифицирован")  # Для отладки
             if user is not None:
                 login(request, user)
-                return redirect('root')  # Указать желаемый URL вместо 'root'
+                return redirect('root')
             else:
                 form.add_error(None, 'Неверное имя пользователя или пароль')
     else:
