@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Создать статус' %}{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h4 class="card-title text-left mb-3">{% trans 'Создать статус' %}</h4>
+                    <form method="post" action="{% url 'create_status' %}" class="form-input">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            {{ form.name.label  }} <!-- Используйте label_tag для автоматического связывания с полем -->
+                            {{ form.name|add_class:"form-control" }} <!-- Добавление класса Bootstrap для стилизации -->
+                        </div>
+                        <!-- Другие поля формы могут быть добавлены здесь с тем же стилем -->
+                        {{ form.other_fields|add_class:"form-control" }}
+                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Создать' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

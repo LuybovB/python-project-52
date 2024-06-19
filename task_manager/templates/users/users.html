@@ -1,30 +1,40 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
-{% block title %}{% trans "Список пользователей" %}{% endblock %}
-
+{% block title %}Список пользователей{% endblock %}
 {% block content %}
-    <h1>{% trans "Пользователи" %}</h1>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover text-nowrap" data-test="urls">
-            <tr>
-                <th>{% trans "ID" %}</th>
-                <th>{% trans "Имя пользователя" %}</th>
-                <th>{% trans "Полное имя" %}</th>
-                <th>{% trans "Дата создания" %}</th>
-            </tr>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.get_full_name }}</td>
-                    <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
-                    <td>
-                        <a href="{% url 'user_update' user.id %}" class="btn btn-primary d-block me-1">{% trans "Изменить" %}</a>
-                        <a href="{% url 'user_delete' user.id %}" class="btn btn-danger d-block">{% trans "Удалить" %}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="card-title">{% trans 'Пользователи' %}</h2>
+                    <table class="table table-striped mt-4">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'ID' %}</th>
+                                <th>{% trans 'Имя пользователя' %}</th>
+                                <th>{% trans 'Полное имя' %}</th>
+                                <th>{% trans 'Дата регистрации' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.get_full_name }}</td>
+                                <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
+                                <td>
+                                    <div><a href="{% url 'user_update' user.id %}">{% trans "Изменить" %}</a></div>
+                                    <div><a href="{% url 'user_delete' user.id %}">{% trans "Удалить" %}</a></div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock %}

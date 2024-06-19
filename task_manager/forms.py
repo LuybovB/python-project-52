@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser
+from .models import CustomUser, Status
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -72,3 +72,12 @@ class CustomUserChangeForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class StatusForm(forms.ModelForm):
+    class Meta:
+        model = Status
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Имя'}),
+        }

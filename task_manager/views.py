@@ -9,6 +9,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from .models import Status
+from .forms import StatusForm
 
 
 class IndexView(TemplateView):
@@ -35,7 +37,6 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
-
 
 
 def user_list(request):
@@ -89,6 +90,7 @@ def user_update_view(request, pk):
 
     return render(request, 'users/user_update.html', {'form': form})
 
+
 @login_required
 def user_delete_view(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
@@ -103,3 +105,40 @@ def user_delete_view(request, pk):
         return HttpResponseRedirect(reverse('login'))
 
     return render(request, 'users/user_delete.html', {'user': user})
+
+
+def list_statuses(request):
+    statuses = Status.objects.all()
+    return render(request, 'statuses/statuses.html', {'statuses': statuses})
+
+
+def create_status(request):
+    if request.method == 'POST':
+        messages.success(request, 'Статус успешно создан')
+        form = StatusForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_statuses')
+    else:
+        form = StatusForm()
+    return render(request, 'statuses/create_status.html', {'form': form})
+
+
+def update_status(request, pk):
+    status = get_object_or_404(Status, pk=pk)
+    if request.method == 'POST':
+        form = StatusForm(request.POST, instance=status)
+        if form.is_valid():
+            form.save()
+            return redirect('list_statuses')
+    else:
+        form = StatusForm(instance=status)
+    return render(request, 'statuses/update.html', {'form': form})
+
+
+def delete_status(request, pk):
+    status = get_object_or_404(Status, pk=pk)
+    if request.method == 'POST':
+        status.delete()
+        return redirect('list_statuses')
+    return render(request, 'statuses/delete.html', {'status': status})

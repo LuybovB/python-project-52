@@ -17,21 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import IndexView, register, user_list, login_view, logout_view, user_update_view, user_delete_view
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='root'),
     path('users/create/', register, name='register'),
     path('users/', user_list, name='user-list'),
-
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    # Страница редактирования пользователя
     path('users/<int:pk>/update/', user_update_view, name='user_update'),
-
-    # Обновление пользователя
     path('users/<int:pk>/delete/', user_delete_view, name='user_delete'),
-
-    # Страница удаления пользователя
     path('users/<int:pk>/delete/', user_delete_view, name='user_delete'),
+    path('statuses/', views.list_statuses, name='list_statuses'),
+    path('statuses/create/', views.create_status, name='create_status'),
+    path('statuses/<int:pk>/update/', views.update_status, name='update_status'),
+    path('statuses/<int:pk>/delete/', views.delete_status, name='delete_status'),
 ]

@@ -6,7 +6,7 @@
     <!-- Обновленная ссылка на тему Minty Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/minty/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <title>{% trans 'Task manager' %}</title>
+    <title>{% block title %}{{ page_title }}{% endblock %} - {% trans 'Task manager' %}</title>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav>{% include 'nav.html' %}</nav>
