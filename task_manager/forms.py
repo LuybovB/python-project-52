@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from .models import CustomUser
 
-# Форма для создания нового пользователя, наследуемая от UserCreationForm
+
 class CustomUserCreationForm(forms.ModelForm):
     first_name = forms.CharField(
         label=_('Имя'),
@@ -45,7 +45,7 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
-# Форма для входа пользователя
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         label=_('Имя пользователя'),
@@ -55,3 +55,20 @@ class LoginForm(forms.Form):
         label=_('Пароль'),
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Пароль')})
     )
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'username')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'}),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user

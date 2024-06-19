@@ -1,0 +1,22 @@
+[
+  {
+    "model": "task_manager.CustomUser",
+    "pk": 1,
+    "fields": {
+      "first_name": "Имя",
+      "last_name": "Фамилия",
+      "username": "testuser",
+      "password": "mysecretpassword"
+    }
+  },
+  {
+    "model": "task_manager.CustomUser",
+    "pk": 2,
+    "fields": {
+      "first_name": "Имя2",
+      "last_name": "Фамилия2",
+      "username": "testuser2",
+      "password": "mysecretpassword2"
+    }
+  }
+]

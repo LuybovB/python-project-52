@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Список пользователей{% endblock %}
+{% block title %}{% trans "Список пользователей" %}{% endblock %}
 
 {% block content %}
-    <h1>Пользователи</h1>
+    <h1>{% trans "Пользователи" %}</h1>
     <div class="table-responsive">
         <table class="table table-bordered table-hover text-nowrap" data-test="urls">
             <tr>
-                <th>ID</th>
-                <th>Имя пользователя</th>
-                <th>Полное имя</th>
-                <th>Дата создания</th>
+                <th>{% trans "ID" %}</th>
+                <th>{% trans "Имя пользователя" %}</th>
+                <th>{% trans "Полное имя" %}</th>
+                <th>{% trans "Дата создания" %}</th>
             </tr>
             {% for user in users %}
                 <tr>
@@ -19,8 +20,8 @@
                     <td>{{ user.get_full_name }}</td>
                     <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
                     <td>
-                        <a href="{% url 'user_update' user.id %}" class="btn btn-primary d-block mb-2">Редактировать</a>
-                        <a href="{% url 'user_delete' user.id %}" class="btn btn-danger d-block">Удалить</a>
+                        <a href="{% url 'user_update' user.id %}" class="btn btn-primary d-block me-1">{% trans "Изменить" %}</a>
+                        <a href="{% url 'user_delete' user.id %}" class="btn btn-danger d-block">{% trans "Удалить" %}</a>
                     </td>
                 </tr>
             {% endfor %}

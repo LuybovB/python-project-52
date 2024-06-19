@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-
 class IndexView(TemplateView):
     template_name = "index.html"
     extra_context = {'header': _('Task manager')}
@@ -26,16 +25,17 @@ def register(request):
             user.is_active = True
             user.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password1')  # Используйте 'password1' из формы
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('root')  # Указать желаемый URL вместо 'desired_page'
+                return redirect('root')  # Убедитесь, что 'root' существует в urls.py
             else:
                 return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
 
 
 def user_list(request):
@@ -65,7 +65,6 @@ def login_view(request):
     return render(request, 'users/login.html', {'form': form})
 
 
-
 def logout_view(request):
     logout(request)
     messages.success(request, 'Вы Разлогинены')
@@ -78,7 +77,7 @@ def user_update_view(request, pk):
     form = CustomUserCreationForm(instance=user)
 
     if user != request.user:
-        messages.error(request, 'У вас нет прав для изменения другого пользователя.')
+        messages.success(request, 'У вас нет прав для изменения другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'POST':
@@ -95,7 +94,7 @@ def user_delete_view(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if user != request.user:
-        messages.error(request, 'У вас нет прав для удаления другого пользователя.')
+        messages.success(request, 'У вас нет прав для удаления другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'POST':

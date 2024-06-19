@@ -23,6 +23,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='root'),
     path('users/create/', register, name='register'),
     path('users/', user_list, name='user-list'),
+
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     # Страница редактирования пользователя
