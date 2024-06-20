@@ -51,20 +51,21 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print(f"Попытка входа для пользователя: {username}")  # Для отладки
             user = authenticate(request, username=username, password=password)
-            print(f"Пользователь {'не ' if user is None else ''}аутентифицирован")  # Для отладки
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Вы загологинены')
                 return redirect('root')
             else:
-                form.add_error(None, 'Неверное имя пользователя или пароль')
+                messages.error(request, 'Неверное имя пользователя или пароль')
+                return render(request, 'users/login.html', {'form': form})
+        else:
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+            return render(request, 'users/login.html', {'form': form})
     else:
-
         form = LoginForm()
-
-    return render(request, 'users/login.html', {'form': form})
+        return render(request, 'users/login.html', {'form': form})
 
 
 def logout_view(request):
@@ -79,7 +80,7 @@ def user_update_view(request, pk):
     form = CustomUserCreationForm(instance=user)
 
     if user != request.user:
-        messages.success(request, 'У вас нет прав для изменения другого пользователя.')
+        messages.error(request, 'У вас нет прав для изменения другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'POST':
@@ -97,7 +98,7 @@ def user_delete_view(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if user != request.user:
-        messages.success(request, 'У вас нет прав для удаления другого пользователя.')
+        messages.error(request, 'У вас нет прав для удаления другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'POST':
@@ -108,11 +109,15 @@ def user_delete_view(request, pk):
     return render(request, 'users/user_delete.html', {'user': user})
 
 
-@login_required
+@login_required(login_url='/require_login/')
 def list_statuses(request):
     statuses = Status.objects.all()
     return render(request, 'statuses/statuses.html', {'statuses': statuses})
 
+
+def require_login(request):
+    messages.error(request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+    return redirect('login')
 
 @login_required
 def create_status(request):
@@ -139,6 +144,7 @@ def update_status(request, pk):
     else:
         form = StatusForm(instance=status)
     return render(request, 'statuses/update_status.html', {'form': form, 'status': status})
+
 
 @login_required
 def delete_status(request, pk):

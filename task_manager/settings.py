@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 DEBUG=True
 from pathlib import Path
-
+from django.contrib.messages import constants as messages
 import os
 from dotenv import load_dotenv
 import dj_database_url
@@ -21,6 +21,11 @@ DEFAULT_CHARSET = 'utf-8'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MESSAGE_TAGS = {
+    # ...
+    'ERROR': 'danger',
+    # ...
+}
 
 
 # Quick-start development settings - unsuitable for production
@@ -160,3 +165,6 @@ USE_L10N = True
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
+
+LOGIN_URL = '/login/'
+
