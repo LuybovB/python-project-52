@@ -27,8 +27,7 @@
                                 <td>{{ status.name }}</td>
                                 <td>{{ status.created_at|date:"d.m.Y H:i" }}</td>
                                 <td>
-                                    <div><a href="javascript:void(0);">{% trans "Заглушка" %}</a></div>
-                                    <div><a href="javascript:void(0);">{% trans "Заглушка" %}</a></div>
+                                    <a href="{% url 'update_status' status.id %}">{% trans "Изменить" %}</a>
                                 </td>
                             </tr>
                             {% endfor %}

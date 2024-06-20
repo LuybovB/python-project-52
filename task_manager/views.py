@@ -133,7 +133,8 @@ def update_status(request, pk):
             return redirect('list_statuses')
     else:
         form = StatusForm(instance=status)
-    return render(request, 'statuses/update.html', {'form': form})
+    # В вашем представлении update_status
+    return render(request, 'statuses/update_status.html', {'form': form, 'status': status})
 
 
 def delete_status(request, pk):
