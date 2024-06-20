@@ -26,16 +26,16 @@ class UserCRUDTests(TestCase):
         self.assertEqual(CustomUser.objects.count(), 2)
 
     def test_user_update(self):
-        self.client.force_login(self.user)  # Авторизуем пользователя
+        self.client.force_login(self.user)
         url = reverse('user_update', args=[self.user.pk])
         data = {
             'username': 'updated_user',
             'email': 'updateduser@example.com'
         }
-        response = self.client.post(url, data, follow=True)  # Изменили follow=True
+        response = self.client.post(url, data, follow=True)
         messages = list(response.wsgi_request._messages)
 
-        self.assertEqual(response.status_code, 200)  # Проверяем код состояния на окончательный
+        self.assertEqual(response.status_code, 200)
 
     def test_user_delete(self):
         self.client.login(username='testuser', password='testpassword')
@@ -44,18 +44,22 @@ class UserCRUDTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(CustomUser.objects.count(), 2)
 
+
     def test_create_status(self):
+        self.client.force_login(self.user)
         response = self.client.post(reverse('create_status'), {'name': 'Новый статус'})
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Status.objects.filter(name='Новый статус').exists())
 
     def test_update_status(self):
+        self.client.force_login(self.user)
         response = self.client.post(reverse('update_status', args=[self.status.id]), {'name': 'Обновленный статус'})
         self.assertEqual(response.status_code, 302)
         self.status.refresh_from_db()
         self.assertEqual(self.status.name, 'Обновленный статус')
 
     def test_delete_status(self):
+        self.client.force_login(self.user)
         response = self.client.post(reverse('delete_status', args=[self.status.id]))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Status.objects.filter(name='Тестовый статус').exists())

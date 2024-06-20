@@ -15,10 +15,9 @@
                     <form method="post" action="{% url 'create_status' %}" class="form-input">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.name.label  }} <!-- Используйте label_tag для автоматического связывания с полем -->
-                            {{ form.name|add_class:"form-control" }} <!-- Добавление класса Bootstrap для стилизации -->
+                            {{ form.name.label  }}
+                            {{ form.name|add_class:"form-control" }}
                         </div>
-                        <!-- Другие поля формы могут быть добавлены здесь с тем же стилем -->
                         {{ form.other_fields|add_class:"form-control" }}
                         <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Создать' %}</button>
                     </form>
