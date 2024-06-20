@@ -4,13 +4,14 @@ from .forms import CustomUserCreationForm, LoginForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .models import CustomUser
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Status
 from .forms import StatusForm
+
 
 
 class IndexView(TemplateView):
@@ -127,19 +128,23 @@ def create_status(request):
 def update_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
     if request.method == 'POST':
+        messages.success(request, 'Статус успешно изменен')
         form = StatusForm(request.POST, instance=status)
         if form.is_valid():
             form.save()
             return redirect('list_statuses')
     else:
         form = StatusForm(instance=status)
-    # В вашем представлении update_status
     return render(request, 'statuses/update_status.html', {'form': form, 'status': status})
 
 
 def delete_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
+    if status.tasks.exists():  # Проверяем, связан ли статус с задачами
+        messages.error(request, 'Невозможно удалить статус, потому что он используется')
+        return HttpResponseForbidden('Статус связан с задачей и не может быть удален')
     if request.method == 'POST':
         status.delete()
+        messages.success(request, 'Статус успешно удален')
         return redirect('list_statuses')
-    return render(request, 'statuses/delete.html', {'status': status})
+    return render(request, 'statuses/delete_status.html', {'status': status})

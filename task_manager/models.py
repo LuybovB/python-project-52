@@ -21,3 +21,10 @@ class Status(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Task(models.Model):
+    status = models.ForeignKey('Status', on_delete=models.CASCADE, related_name='tasks')
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+

@@ -32,8 +32,5 @@ urlpatterns = [
     path('statuses/', views.list_statuses, name='list_statuses'),
     path('statuses/create/', views.create_status, name='create_status'),
     path('statuses/<int:pk>/update/', views.update_status, name='update_status'),
-
-
-    #path('statuses/update/<int:status_id>/', views.update_status, name='status_update'),
     path('statuses/<int:pk>/delete/', views.delete_status, name='delete_status'),
 ]

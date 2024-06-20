@@ -17,7 +17,6 @@
                                 <th>{% trans 'ID' %}</th>
                                 <th>{% trans 'Имя' %}</th>
                                 <th>{% trans 'Дата создания' %}</th>
-                                <th>{% trans 'Действия' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,7 +26,8 @@
                                 <td>{{ status.name }}</td>
                                 <td>{{ status.created_at|date:"d.m.Y H:i" }}</td>
                                 <td>
-                                    <a href="{% url 'update_status' status.id %}">{% trans "Изменить" %}</a>
+                                    <div><a href="{% url 'update_status' status.id %}">{% trans "Изменить" %}</a></div>
+                                    <div><a href="{% url 'delete_status' status.id %}">{% trans "Удалить" %}</a></div>
                                 </td>
                             </tr>
                             {% endfor %}
