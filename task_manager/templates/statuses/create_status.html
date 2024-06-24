@@ -2,8 +2,6 @@
 
 {% load i18n %}
 
-{% block title %}{% trans 'Создать статус' %}{% endblock %}
-
 {% block content %}
 {% load widget_tweaks %}
 <div class="container mt-5">
@@ -11,7 +9,7 @@
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h4 class="card-title text-left mb-3">{% trans 'Создать статус' %}</h4>
+                    <h4 class="card-title text-left mb-3">{% trans 'Create Status' %}</h4>
                     <form method="post" action="{% url 'create_status' %}" class="form-input">
                         {% csrf_token %}
                         <div class="form-group mb-3">
@@ -19,7 +17,7 @@
                             {{ form.name|add_class:"form-control" }}
                         </div>
                         {{ form.other_fields|add_class:"form-control" }}
-                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Создать' %}</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Create' %}</button>
                     </form>
                 </div>
             </div>

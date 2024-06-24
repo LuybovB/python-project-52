@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}Регистрация пользователя{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h2 class="card-title text-center">{% trans 'Регистрация' %}</h2>
+                    <h2 class="card-title text-center">{% trans 'Register' %}</h2>
                     <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary w-100">{% trans 'Зарегистрировать' %}</button>
+                        <button type="submit" class="btn btn-primary w-100">{% trans 'RegisterButton' %}</button>
                     </form>
                 </div>
             </div>

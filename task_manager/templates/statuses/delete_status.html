@@ -4,10 +4,10 @@
 {% load i18n %}
 
 {% block content %}
-  <h2>{% trans "Удаление статуса" %}</h2>
+  <h2>{% trans "Deletion of Status" %}</h2>
   <form method="post">
     {% csrf_token %}
-    <p>{% trans "Вы уверены, что хотите удалить статус" %} "{{ status.name }}"?</p>
-    <input type="submit" name="confirm_delete" value="{% trans "Да, удалить" %}" style="background-color: red; color: white;" >
+    <p>{% trans "Are you sure you want to delete the status" %} "{{ status.name }}"?</p>
+    <input type="submit" name="confirm_delete" value="{% trans "Yes, delete" %}" style="background-color: red; color: white;" >
   </form>
 {% endblock %}

@@ -4,10 +4,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-# 1index.html
-msgid "Task Manager"
-msgstr "Менеджер задач"
+#task_detail.html.
+msgid "Task view"
+msgstr "Просмотр задачи"
 
+msgid "Author"
+msgstr "Автор"
+
+msgid "Executor"
+msgstr "Исполнитель"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Created at"
+msgstr "Создано"
+
+msgid "Labels:"
+msgstr "Метки:"
+
+msgid "Edit"
+msgstr "Изменить"
+
+msgid "Delete"
+msgstr "Удалить"
+
+# 1index.html
 msgid "Hello from Hexlet!"
 msgstr "Привет от Хекслета!"
 
@@ -18,9 +40,6 @@ msgid "Learn more"
 msgstr "Узнать больше"
 
 # 2register.html
-msgid "Register"
-msgstr "Регистрация"
-
 msgid "Sign up"
 msgstr "Зарегистрироваться"
 
@@ -39,12 +58,15 @@ msgstr "Дата создания"
 
 # 4users_update.html
 msgid "Edit user"
-msgstr "Редактирование пользователя"
+msgstr "Изменение пользователя "
 
 msgid "Save"
 msgstr "Сохранить"
 
 # 5nav.html
+msgid "Task Manager"
+msgstr "Менеджер задач"
+
 msgid "Users"
 msgstr "Пользователи"
 
@@ -53,6 +75,9 @@ msgstr "Выход"
 
 msgid "Login"
 msgstr "Вход"
+
+msgid "Register"
+msgstr "Регистрация"
 
 # 6user_delete.html
 msgid "Delete User"
@@ -75,32 +100,47 @@ msgstr "Закрыть"
 msgid "Hexlet"
 msgstr "Хекслет"
 
+msgid "Task Create"
+msgstr "Создание задачи"
 
-#  8 login.html
+msgid "Name"
+msgstr "Имя"
 
-msgid "Вход в систему"
-msgstr "Log in to the system"
+msgid "Overview"
+msgstr "Описание"
 
-msgid "Вход"
-msgstr "Login"
+msgid "Select Status"
+msgstr "Выберете статус"
 
-msgid "Имя пользователя"
-msgstr "Username"
+msgid "No available statuses"
+msgstr "Нет доступных статусов"
 
-msgid "Введите имя пользователя"
-msgstr "Enter username"
+msgid "Исполнитель"
+msgstr "Performer"
 
-msgid "Пароль"
-msgstr "Password"
+msgid "Выберите исполнителя"
+msgstr "Choose a performer"
 
-msgid "Введите пароль"
-msgstr "Enter password"
+msgid "Нет доступных исполнителей"
+msgstr "No available performers"
 
-msgid "Войти"
-msgstr "Sign in"
+msgid "Enter Label"
+msgstr "Введите метку"
 
-msgid "Автор"
-msgstr "Author"
+msgid "LoginButton"
+msgstr "Войти"
 
-msgid "Status"
-msgstr "Статус"
+msgid "RegisterButton"
+msgstr "Зарегистрировать"
+
+msgid "Create Status"
+msgstr "Создать статус"
+
+msgid "Deletion of Status"
+msgstr "Удаление статуса"
+
+msgid "Are you sure you want to delete the status"
+msgstr "Вы уверены, что хотите удалить статус"
+
+msgid "Create"
+msgstr "Создать"

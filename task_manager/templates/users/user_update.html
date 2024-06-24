@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}Изменение пользователя{% endblock %}
 {% block content %}
 
 <div class="container mt-4">
-    <h1 class="display-4">{% trans 'Редактирование пользователя' %}</h1>
+    <h1 class="display-4">{% trans 'Edit user' %}</h1>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">{% trans 'Сохранить' %}</button>
+        <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
     </form>
 </div>
 
