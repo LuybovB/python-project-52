@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Удалить задачу' %}{% endblock %}
+
+{% block content %}
+  <h2>{% trans 'Удалить задачу' %}</h2>
+
+  <p>{% trans 'Вы уверены, что хотите удалить эту задачу?' %}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">{% trans 'Удалить' %}</button>
+  </form>
+
+  <a href="{% url 'tasks_list' %}" class="btn btn-secondary">{% trans 'Отмена' %}</a>
+{% endblock %}

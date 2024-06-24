@@ -1,17 +1,13 @@
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
-from .forms import CustomUserCreationForm, LoginForm
+from task_manager.forms import CustomUserCreationForm, LoginForm, StatusForm, TaskForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from task_manager.models import CustomUser, Status, Task
+from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from .models import Status
-from .forms import StatusForm
-
 
 
 class IndexView(TemplateView):
@@ -157,3 +153,75 @@ def delete_status(request, pk):
         messages.success(request, 'Статус успешно удален')
         return redirect('list_statuses')
     return render(request, 'statuses/delete_status.html', {'status': status})
+
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.all()
+    statuses = Status.objects.all()
+    return render(request, 'tasks/tasks.html', {'tasks': tasks, 'statuses': statuses})
+
+
+@login_required
+def task_create(request):
+    form = TaskForm(request.POST or None)
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.author = request.user
+        # Добавьте следующую строку для установки статуса задачи
+        task.status = form.cleaned_data.get('status')
+        task.save()
+        return redirect('task_list')
+    else:
+        statuses = Status.objects.all()  # Получаем все статусы из базы данных
+        users = CustomUser.objects.all()
+        return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
+
+
+
+@login_required
+def task_update(request, pk):
+    task = get_object_or_404(Task, pk=pk)  # Сначала получаем задачу
+    statuses = Status.objects.all()  # Получаем все статусы из базы данных
+    users = CustomUser.objects.all()  # Получаем всех пользователей
+
+    if request.user != task.author:
+        return redirect('task_list')  # Проверяем, является ли пользователь автором
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)  # Создаем форму с данными POST и экземпляром задачи
+        if form.is_valid():
+            form.save()  # Сохраняем форму, если она валидна
+            return redirect('task_list')  # Перенаправляем на список задач
+    else:
+        form = TaskForm(instance=task)  # Создаем пустую форму с экземпляром задачи для GET-запроса
+
+    return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
+
+
+
+@login_required
+def task_detail(request, pk):
+    task = Task.objects.get(pk=pk)
+    return render(request, 'tasks/task_detail.html', {'task': task})
+
+@login_required
+def task_delete(request, pk):
+    task = Task.objects.get(pk=pk)
+    if request.user == task.author:
+        task.delete()
+    return redirect('task_list')
+
+
+def get_statuses(request):
+    # Получаем все статусы из базы данных
+    statuses = Status.objects.all().values('id', 'name')  # Пример полей: id и name
+    status_list = list(statuses)  # Преобразуем QuerySet в список словарей
+    return JsonResponse({'statuses': status_list})
+
+
+def get_users(request):
+    # Получаем всех пользователей из базы данных
+    users = CustomUser.objects.all().values('id', 'username')  # Пример полей: id и username
+    user_list = list(users)  # Преобразуем QuerySet в список словарей
+    return JsonResponse({'users': user_list})

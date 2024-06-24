@@ -12,13 +12,6 @@
                 <div class="card-body">
                     <h4 class="card-title text-center mb-4">{% trans 'Вход' %}</h4>
                     <!-- Используем систему сообщений Django для отображения ошибок -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} text-center" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
                     <form method="post" action="{% url 'login' %}">
                         {% csrf_token %}
                         <div class="form-group mb-3">

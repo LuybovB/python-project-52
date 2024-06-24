@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, Status
+from .models import CustomUser, Status, Task
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -80,4 +80,17 @@ class StatusForm(forms.ModelForm):
         fields = ['name']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Имя'}),
+        }
+
+
+class TaskForm(forms.ModelForm):
+    status = forms.ModelChoiceField(queryset=Status.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    executor = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(attrs={'class': 'form-control'})) # Используйте CustomUser здесь
+
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'status', 'executor'] # Добавьте 'executor' здесь
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
