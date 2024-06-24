@@ -45,9 +45,6 @@ msgid "Save"
 msgstr "Сохранить"
 
 # 5nav.html
-msgid "Task Manager"
-msgstr "Менеджер задач"
-
 msgid "Users"
 msgstr "Пользователи"
 
@@ -56,9 +53,6 @@ msgstr "Выход"
 
 msgid "Login"
 msgstr "Вход"
-
-msgid "Register"
-msgstr "Регистрация"
 
 # 6user_delete.html
 msgid "Delete User"
@@ -104,3 +98,9 @@ msgstr "Enter password"
 
 msgid "Войти"
 msgstr "Sign in"
+
+msgid "Автор"
+msgstr "Author"
+
+msgid "Status"
+msgstr "Статус"

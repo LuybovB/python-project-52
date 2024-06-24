@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}{% trans 'Вход в систему' %}{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
@@ -10,17 +10,17 @@
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h4 class="card-title text-center mb-4">{% trans 'Вход' %}</h4>
+                    <h4 class="card-title text-center mb-4">Вход</h4>
                     <!-- Используем систему сообщений Django для отображения ошибок -->
                     <form method="post" action="{% url 'login' %}">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="username">{% trans 'Имя пользователя' %}</label>
-                            <input type="text" name="username" class="form-control" id="username" placeholder="{% trans 'Имя пользователя' %}">
+                            <label for="username">{% trans 'Username' %}</label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="{% trans 'Введите имя пользователя' %}">
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password">{% trans 'Пароль' %}</label>
-                            <input type="password" name="password" class="form-control" id="password" placeholder="{% trans 'Пароль' %}">
+                            <label for="password">{% trans 'Password' %}</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="{% trans 'Введите пароль' %}">
                         </div>
                         <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Войти' %}</button>
                     </form>

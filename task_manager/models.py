@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
 
 
 class Status(models.Model):
-    name = models.CharField(verbose_name=_('Имя'), max_length=100, validators=[])
+    name = models.CharField(verbose_name=_('Name'), max_length=100, validators=[])
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -25,13 +25,13 @@ class Status(models.Model):
 
 
 class Task(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1)
-    author = models.ForeignKey(CustomUser, related_name='author_tasks', on_delete=models.CASCADE)
-    executor = models.ForeignKey(CustomUser, related_name='executor_tasks', on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+    description = models.TextField(verbose_name=_('Description'))
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='tasks', default=1, verbose_name=_('Status'))
+    author = models.ForeignKey(CustomUser, related_name='author_tasks', on_delete=models.CASCADE, verbose_name=_('Author'))
+    executor = models.ForeignKey(CustomUser, related_name='executor_tasks', on_delete=models.CASCADE, null=True, verbose_name=_('Executor'))
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата создания'))
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

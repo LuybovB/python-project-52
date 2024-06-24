@@ -8,6 +8,9 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonRespons
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class IndexView(TemplateView):
@@ -115,6 +118,7 @@ def require_login(request):
     messages.error(request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
     return redirect('login')
 
+
 @login_required
 def create_status(request):
     if request.method == 'POST':
@@ -145,14 +149,17 @@ def update_status(request, pk):
 @login_required
 def delete_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
-    if status.tasks.exists():
-        messages.error(request, 'Невозможно удалить статус, потому что он используется')
-        return HttpResponseForbidden('Статус связан с задачей и не может быть удален')
     if request.method == 'POST':
-        status.delete()
-        messages.success(request, 'Статус успешно удален')
-        return redirect('list_statuses')
-    return render(request, 'statuses/delete_status.html', {'status': status})
+        if status.tasks.exists():
+            messages.error(request, 'Невозможно удалить статус, потому что он используется')
+            return redirect('list_statuses')
+        else:
+            status.delete()
+            messages.success(request, 'Статус успешно удален')
+            return redirect('list_statuses')
+    else:
+        return render(request, 'statuses/delete_status.html', {'status': status})
+
 
 
 @login_required
@@ -165,17 +172,20 @@ def task_list(request):
 @login_required
 def task_create(request):
     form = TaskForm(request.POST or None)
-    if form.is_valid():
-        task = form.save(commit=False)
-        task.author = request.user
-        # Добавьте следующую строку для установки статуса задачи
-        task.status = form.cleaned_data.get('status')
-        task.save()
-        return redirect('task_list')
-    else:
-        statuses = Status.objects.all()  # Получаем все статусы из базы данных
-        users = CustomUser.objects.all()
-        return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
+    if request.method == 'POST':
+        logger.info('Received POST request with data: %s', request.POST)
+        if form.is_valid():
+            logger.info('Form is valid')
+            task = form.save(commit=False)
+            task.author = request.user
+            task.save()
+            messages.success(request, 'Задача успешно создана')
+            return redirect('task_list')  # Убедитесь, что 'task_list' - это имя вашего URL
+        else:
+            logger.warning('Form is not valid: %s', form.errors)
+    statuses = Status.objects.all()
+    users = CustomUser.objects.all()
+    return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
 
 
 
@@ -199,11 +209,11 @@ def task_update(request, pk):
     return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
 
 
-
 @login_required
 def task_detail(request, pk):
     task = Task.objects.get(pk=pk)
     return render(request, 'tasks/task_detail.html', {'task': task})
+
 
 @login_required
 def task_delete(request, pk):

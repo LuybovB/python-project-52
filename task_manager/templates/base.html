@@ -3,10 +3,9 @@
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
-    <!-- Обновленная ссылка на тему Minty Bootstrap -->
+     <title>{% block title %}Менеджер задач Hexlet{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/minty/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <title>{% block title %}{{ page_title }}{% endblock %} - {% trans 'Task manager' %}</title>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav>{% include 'nav.html' %}</nav>

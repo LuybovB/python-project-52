@@ -18,10 +18,10 @@
           <div class="form-group">
             {% if field.name == 'name' %}
               <label for="id_name">{% trans 'Имя' %}: </label>
-              <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Введите имя' %}">
+              <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Имя' %}">
             {% elif field.name == 'description' %}
               <label for="id_description">{% trans 'Описание' %}: </label>
-              <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Введите описание' %}" rows="10"></textarea>
+              <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Описание' %}" rows="10"></textarea>
             {% endif %}
           </div>
         {% endif %}
