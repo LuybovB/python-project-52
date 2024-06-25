@@ -4,6 +4,59 @@
   <h2>{% trans 'Tasks' %}</h2>
   <a href="{% url 'task_create' %}" class="btn btn-success mb-3">{% trans 'Create task' %}</a>
 
+  <form method="get" class="form-inline">
+    <!-- Фильтр Статус -->
+    <div class="form-group mb-2">
+      <label for="id_status" class="sr-only">{% trans 'Status' %}:</label>
+      <select name="status" id="id_status" class="form-control">
+        <option value="" selected disabled>----</option>
+        <option value="" disabled>{% trans 'Select Status' %}</option>
+        {% for status in statuses %}
+          <option value="{{ status.id }}">{{ status.name }}</option>
+        {% empty %}
+          <option value="" disabled>{% trans 'No available statuses' %}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Фильтр Исполнитель -->
+    <div class="form-group mb-2">
+      <label for="id_executor" class="sr-only">{% trans 'Executor' %}:</label>
+      <select name="executor" id="id_executor" class="form-control">
+        <option value="" selected disabled>----</option>
+        <option value="" disabled>{% trans 'Select Executor' %}</option>
+        {% for executor in executors %}
+          <option value="{{ executor.id }}">{{ executor.get_full_name }}</option>
+        {% empty %}
+          <option value="" disabled>{% trans 'No available executors' %}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Фильтр Метка -->
+    <div class="form-group mb-2">
+      <label for="id_label" class="sr-only">{% trans 'Label' %}:</label>
+      <select name="label" id="id_label" class="form-control">
+        <option value="" selected disabled>----</option>
+        <option value="" disabled>{% trans 'Select Label' %}</option>
+        {% for label in labels %}
+          <option value="{{ label.id }}">{{ label.name }}</option>
+        {% empty %}
+          <option value="" disabled>{% trans 'No available labels' %}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Фильтр Только свои задачи -->
+    <div class="form-group mb-2">
+      <label for="own_tasks">{% trans 'Only my tasks' %}:</label>
+      <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
+    </div>
+
+    <!-- Кнопка Показать -->
+    <button type="submit" class="btn btn-primary mb-2">{% trans 'Show' %}</button>
+  </form>
+
   <table class="table table-striped mt-4">
     <thead>
       <tr>
@@ -19,14 +72,14 @@
       {% for task in tasks %}
         <tr>
           <th scope="row">{{ task.id }}</th>
-                    <td><a href="{% url 'task_detail' task.id %}">{{ task.name }}</a></td>
+          <td><a href="{% url 'task_detail' task.id %}">{{ task.name }}</a></td>
           <td>{{ task.status.name }}</td>
-          <td>{{ task.author }}</td>
-          <td>{{ task.executor }}</td>
+          <td>{{ task.author.get_full_name }}</td>
+          <td>{{ task.executor.get_full_name }}</td>
           <td>{{ task.created_at }}</td>
           <td>
-            <div><a href="{% url 'task_update' task.id %}">{% trans "Edit" %}</a></div>
-            <div><a href="{% url 'task_delete' task.id %}">{% trans "Delete" %}</a></div>
+              <div><a href="{% url 'task_update' task.id %}">{% trans "Edit" %}</a></div>
+              <div><a href="{% url 'task_delete' task.id %}">{% trans "Delete" %}</a></div>
           </td>
         </tr>
       {% endfor %}

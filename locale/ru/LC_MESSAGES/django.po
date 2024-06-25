@@ -171,3 +171,18 @@ msgstr "Создать метку"
 
 msgid "Update Label"
 msgstr "Изменение метки"
+
+msgid "Select Executor"
+msgstr "Выберете исполнителя"
+
+msgid "Select Label"
+msgstr "Выберете исполнителя"
+
+msgid "Label"
+msgstr "Метка"
+
+msgid "Show"
+msgstr "Показать"
+
+msgid "Only my tasks"
+msgstr "Только мои задачи"

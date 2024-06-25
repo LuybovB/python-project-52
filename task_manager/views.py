@@ -173,7 +173,36 @@ def delete_status(request, pk):
 def task_list(request):
     tasks = Task.objects.all()
     statuses = Status.objects.all()
-    return render(request, 'tasks/tasks.html', {'tasks': tasks, 'statuses': statuses})
+    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
+    labels = Label.objects.all()
+
+    # Фильтрация по статусу
+    status_id = request.GET.get('status')
+    if status_id:
+        tasks = tasks.filter(status_id=status_id)
+
+    # Фильтрация по исполнителю
+    executor_id = request.GET.get('executor')
+    if executor_id:
+        tasks = tasks.filter(executor_id=executor_id)
+
+    # Фильтрация по метке
+    label_id = request.GET.get('label')
+    if label_id:
+        tasks = tasks.filter(label__id=label_id)
+
+    # Фильтрация для отображения только задач, созданных текущим пользователем
+    if 'own_tasks' in request.GET:
+        tasks = tasks.filter(author=request.user)
+
+    # Возвращаем ответ только один раз, с учетом всех фильтров
+    return render(request, 'tasks/tasks.html', {
+        'tasks': tasks,
+        'statuses': statuses,
+        'executors': executors,
+        'labels': labels,
+    })
+
 
 
 @login_required
