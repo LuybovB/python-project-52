@@ -26,6 +26,9 @@ msgstr "Метки:"
 msgid "Edit"
 msgstr "Изменить"
 
+msgid "Edit status"
+msgstr "Изменить статус"
+
 msgid "Delete"
 msgstr "Удалить"
 
@@ -144,3 +147,18 @@ msgstr "Вы уверены, что хотите удалить статус"
 
 msgid "Create"
 msgstr "Создать"
+
+msgid "Task manager Hexlet"
+msgstr "Менеджер задач Hexlet"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Create task"
+msgstr "Создать задачу"
+
+msgid "Edit Task"
+msgstr "Изменить задачу"
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"

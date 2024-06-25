@@ -149,17 +149,16 @@ def update_status(request, pk):
 @login_required
 def delete_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
+    if status.tasks.exists():
+        messages.error(request, 'Невозможно удалить статус, потому что он используется')
+        return redirect('list_statuses')
+
     if request.method == 'POST':
-        if status.tasks.exists():
-            messages.error(request, 'Невозможно удалить статус, потому что он используется')
-            return redirect('list_statuses')
-        else:
-            status.delete()
-            messages.success(request, 'Статус успешно удален')
-            return redirect('list_statuses')
+        status.delete()
+        messages.success(request, 'Статус успешно удален')
+        return redirect('list_statuses')
     else:
         return render(request, 'statuses/delete_status.html', {'status': status})
-
 
 
 @login_required
@@ -180,7 +179,7 @@ def task_create(request):
             task.author = request.user
             task.save()
             messages.success(request, 'Задача успешно создана')
-            return redirect('task_list')  # Убедитесь, что 'task_list' - это имя вашего URL
+            return redirect('task_list')
         else:
             logger.warning('Form is not valid: %s', form.errors)
     statuses = Status.objects.all()
@@ -188,23 +187,21 @@ def task_create(request):
     return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
 
 
-
 @login_required
 def task_update(request, pk):
-    task = get_object_or_404(Task, pk=pk)  # Сначала получаем задачу
-    statuses = Status.objects.all()  # Получаем все статусы из базы данных
-    users = CustomUser.objects.all()  # Получаем всех пользователей
+    task = get_object_or_404(Task, pk=pk)
+    statuses = Status.objects.all()
+    users = CustomUser.objects.all()
 
-    if request.user != task.author:
-        return redirect('task_list')  # Проверяем, является ли пользователь автором
-
+    # Убираем проверку на авторство задачи
     if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)  # Создаем форму с данными POST и экземпляром задачи
+        form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            form.save()  # Сохраняем форму, если она валидна
-            return redirect('task_list')  # Перенаправляем на список задач
+            form.save()
+            messages.success(request, 'Задача успешно обновлена.')
+            return redirect('task_list')
     else:
-        form = TaskForm(instance=task)  # Создаем пустую форму с экземпляром задачи для GET-запроса
+        form = TaskForm(instance=task)
 
     return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
 
@@ -217,21 +214,15 @@ def task_detail(request, pk):
 
 @login_required
 def task_delete(request, pk):
-    task = Task.objects.get(pk=pk)
-    if request.user == task.author:
+    task = get_object_or_404(Task, pk=pk)
+
+    if request.user != task.author:
+        messages.error(request, 'Задачу может удалить только ее автор.')
+        return redirect('task_list')
+
+    if request.method == 'POST':
         task.delete()
-    return redirect('task_list')
+        messages.success(request, 'Задача успешно удалена.')
+        return redirect('task_list')
 
-
-def get_statuses(request):
-    # Получаем все статусы из базы данных
-    statuses = Status.objects.all().values('id', 'name')  # Пример полей: id и name
-    status_list = list(statuses)  # Преобразуем QuerySet в список словарей
-    return JsonResponse({'statuses': status_list})
-
-
-def get_users(request):
-    # Получаем всех пользователей из базы данных
-    users = CustomUser.objects.all().values('id', 'username')  # Пример полей: id и username
-    user_list = list(users)  # Преобразуем QuerySet в список словарей
-    return JsonResponse({'users': user_list})
+    return render(request, 'tasks/task_delete.html', {'task': task})

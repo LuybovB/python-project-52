@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
-
 {% load i18n %}
-
-{% block title %}{% trans 'Изменить статус' %}{% endblock %}
-
 {% block content %}
 {% load widget_tweaks %}
 <div class="container mt-5">
@@ -11,16 +7,15 @@
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h4 class="card-title text-left mb-3">{% trans 'Изменить статус' %}</h4>
+                    <h4 class="card-title text-left mb-3">{% trans 'Edit status' %}</h4>
                     <form method="post" action="{% url 'update_status' status.id %}" class="form-input">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.name.label  }} <!-- Используйте label_tag для автоматического связывания с полем -->
-                            {{ form.name|add_class:"form-control" }} <!-- Добавление класса Bootstrap для стилизации -->
+                            {{ form.name.label  }}
+                            {{ form.name|add_class:"form-control" }}
                         </div>
-                        <!-- Другие поля формы могут быть добавлены здесь с тем же стилем -->
                         {{ form.other_fields|add_class:"form-control" }}
-                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Изменить' %}</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Edit' %}</button>
                     </form>
                 </div>
             </div>
