@@ -179,6 +179,7 @@ def task_list(request):
 @login_required
 def task_create(request):
     form = TaskForm(request.POST or None)
+    labels = Label.objects.all()  # Получаем список всех меток
     if request.method == 'POST':
         logger.info('Received POST request with data: %s', request.POST)
         if form.is_valid():
@@ -186,13 +187,19 @@ def task_create(request):
             task = form.save(commit=False)
             task.author = request.user
             task.save()
+            task.labels.set(request.POST.getlist('label'))  # Сохраняем выбранные метки
             messages.success(request, 'Задача успешно создана')
             return redirect('task_list')
         else:
             logger.warning('Form is not valid: %s', form.errors)
     statuses = Status.objects.all()
     users = CustomUser.objects.all()
-    return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
+    return render(request, 'tasks/task_form.html', {
+        'form': form,
+        'statuses': statuses,
+        'users': users,
+        'labels': labels  # Добавляем метки в контекст
+    })
 
 
 @login_required
@@ -236,16 +243,24 @@ def task_delete(request, pk):
     return render(request, 'tasks/task_delete.html', {'task': task})
 
 
+@login_required
 def label_delete(request, pk):
     label = get_object_or_404(Label, pk=pk)
-    if label.task_set.exists():  # Проверяем, связана ли метка с задачами
-        messages.error(request, 'Эту метку нельзя удалить, так как она связана с задачей.')
+    if request.method == 'POST':
+        if label.tasks.exists():  # Проверяем, связана ли метка с задачами
+            messages.error(request, 'Эту метку нельзя удалить, так как она связана с задачей.')
+            return redirect('labels-list')
+        else:
+            label.delete()
+            messages.success(request, 'Метка успешно удалена.')
+            return redirect('labels-list')
     else:
-        label.delete()
-        messages.success(request, 'Метка успешно удалена.')
-    return redirect('labels_list')  # Возвращаем пользователя на список меток
+        # Если метод GET, показываем страницу подтверждения
+        return render(request, 'labels/label_delete.html', {'label': label})
 
 
+
+@login_required
 def label_create(request):
     if request.method == 'POST':
         form = LabelForm(request.POST)
@@ -266,6 +281,8 @@ def label_update(request, pk):
             form.save()
             messages.success(request, 'Метка успешно обновлена.')
             return redirect('labels-list')
+        else:
+            messages.error(request, 'Ошибка при обновлении метки.')
     else:
         form = LabelForm(instance=label)
     return render(request, 'labels/label_update.html', {'form': form, 'label': label})

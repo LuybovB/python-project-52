@@ -28,12 +28,6 @@ class Label(models.Model):
     name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def delete(self, *args, **kwargs):
-        if self.task_set.exists():  # Проверяем, есть ли связанные задачи
-            return  # Если есть, прерываем операцию удаления
-        super(Label, self).delete(*args, **kwargs)  # Иначе, вызываем стандартный метод удаления
-
-
     def __str__(self):
         return self.name
 
@@ -46,7 +40,7 @@ class Task(models.Model):
     executor = models.ForeignKey(CustomUser, related_name='executor_tasks', on_delete=models.CASCADE, null=True, verbose_name=_('Executor'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата создания'))
     updated_at = models.DateTimeField(auto_now=True)
-    labels = models.ManyToManyField(Label, related_name='tasks')
+    label = models.ManyToManyField(Label, related_name='tasks')
 
     def __str__(self):
         return self.name
