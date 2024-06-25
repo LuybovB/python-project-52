@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h4 class="card-title text-left mb-3">{% trans 'Update Label' %}</h4>
+                    <form method="post" action="{% url 'label_update' label.id %}" class="form-input">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            {{ form.name.label_tag }}
+                            {{ form.name|add_class:"form-control" }}
+                        </div>
+                        {% for field in form.visible_fields %}
+                            {% if field.name != 'name' %}
+                                <div class="form-group mb-3">
+                                    {{ field.label_tag }}
+                                    {{ field|add_class:"form-control" }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Edit' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

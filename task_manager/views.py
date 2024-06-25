@@ -1,9 +1,9 @@
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
-from task_manager.forms import CustomUserCreationForm, LoginForm, StatusForm, TaskForm
+from task_manager.forms import CustomUserCreationForm, LoginForm, StatusForm, TaskForm, LabelForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from task_manager.models import CustomUser, Status, Task
+from task_manager.models import CustomUser, Status, Task, Label
 from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
@@ -27,11 +27,11 @@ def register(request):
             user.is_active = True
             user.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')  # Используйте 'password1' из формы
+            password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('root')  # Убедитесь, что 'root' существует в urls.py
+                return redirect('root')
             else:
                 return redirect('login')
     else:
@@ -234,3 +234,43 @@ def task_delete(request, pk):
         return redirect('task_list')
 
     return render(request, 'tasks/task_delete.html', {'task': task})
+
+
+def label_delete(request, pk):
+    label = get_object_or_404(Label, pk=pk)
+    if label.task_set.exists():  # Проверяем, связана ли метка с задачами
+        messages.error(request, 'Эту метку нельзя удалить, так как она связана с задачей.')
+    else:
+        label.delete()
+        messages.success(request, 'Метка успешно удалена.')
+    return redirect('labels_list')  # Возвращаем пользователя на список меток
+
+
+def label_create(request):
+    if request.method == 'POST':
+        form = LabelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Метка успешно создана.')
+            return redirect('labels-list')
+    else:
+        form = LabelForm()
+    return render(request, 'labels/label_create.html', {'form': form})
+
+
+def label_update(request, pk):
+    label = get_object_or_404(Label, pk=pk)
+    if request.method == 'POST':
+        form = LabelForm(request.POST, instance=label)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Метка успешно обновлена.')
+            return redirect('labels-list')
+    else:
+        form = LabelForm(instance=label)
+    return render(request, 'labels/label_update.html', {'form': form, 'label': label})
+
+
+def labels_list(request):
+    labels = Label.objects.all()
+    return render(request, 'labels/labels.html', {'labels': labels})
