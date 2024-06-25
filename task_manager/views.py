@@ -100,12 +100,20 @@ def user_delete_view(request, pk):
         messages.error(request, 'У вас нет прав для удаления другого пользователя.')
         return redirect('user-list')
 
-    if request.method == 'POST':
-        user.delete()
-        messages.success(request, 'Пользователь успешно удален.')
-        return HttpResponseRedirect(reverse('login'))
+    if request.method == 'GET':
+        return render(request, 'users/user_delete.html', {'user': user})
 
-    return render(request, 'users/user_delete.html', {'user': user})
+    if request.method == 'POST':
+        if user.author_tasks.exists() or user.executor_tasks.exists():
+            messages.error(request, 'Нельзя удалить пользователя, если он является автором или исполнителем задач.')
+            return redirect('user-list')
+        else:
+            user.delete()
+            logout(request)
+            messages.success(request, 'Пользователь успешно удален.')
+            return HttpResponseRedirect(reverse('login'))
+
+    return redirect('user-list')
 
 
 @login_required(login_url='/require_login/')
