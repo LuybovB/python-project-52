@@ -9,8 +9,16 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import logging
+from django.shortcuts import render
+from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
+
+
+def index(request):
+    a = None
+    a.hello() # Creating an error with an invalid line of code
+    return HttpResponse("Hello, world. You're at the pollapp index.")
 
 
 class IndexView(TemplateView):

@@ -15,6 +15,8 @@ from django.contrib.messages import constants as messages
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import rollbar
+
 load_dotenv()
 
 DEFAULT_CHARSET = 'utf-8'
@@ -62,7 +64,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # Удален дублирующийся 'django.middleware.security.SecurityMiddleware'
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+    'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
 ]
 
 
@@ -169,3 +172,11 @@ LOCALE_PATHS = [
 
 LOGIN_URL = '/login/'
 
+ROLLBAR = {
+    'access_token': '67cdf733f64e4527a4d20a257338864b',
+    'environment': 'development' if DEBUG else 'production',
+    'code_version': '1.0',
+    'root': BASE_DIR,
+}
+
+rollbar.init(**ROLLBAR)
