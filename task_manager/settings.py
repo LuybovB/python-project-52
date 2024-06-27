@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 import dj_database_url
 import rollbar
 
+
 load_dotenv()
 
 DEFAULT_CHARSET = 'utf-8'

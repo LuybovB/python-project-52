@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    a = None
-    a.hello() # Creating an error with an invalid line of code
+    # a = None
+    # a.hello() # Удалено для предотвращения ошибки AttributeError
     return HttpResponse("Hello, world. You're at the pollapp index.")
 
 
