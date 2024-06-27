@@ -29,7 +29,7 @@ MESSAGE_TAGS = {
     'ERROR': 'danger',
     # ...
 }
-
+ROLLBAR_TOKEN = os.getenv('ROLL_BAR_TOKEN')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -174,7 +174,7 @@ LOCALE_PATHS = [
 LOGIN_URL = '/login/'
 
 ROLLBAR = {
-    'access_token': '67cdf733f64e4527a4d20a257338864b',
+    'access_token': ROLLBAR_TOKEN,
     'environment': 'development' if DEBUG else 'production',
     'code_version': '1.0',
     'root': BASE_DIR,

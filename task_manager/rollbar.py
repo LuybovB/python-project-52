@@ -1,8 +1,19 @@
 import rollbar
+import os
 
+
+# Загрузка токена из переменных окружения
+ROLLBAR_TOKEN = os.getenv('ROLL_BAR_TOKEN')
+
+# Проверка, что токен был загружен
+if ROLLBAR_TOKEN is None:
+    raise ValueError('Токен Rollbar не найден. Проверьте настройки переменных окружения.')
 
 # Настройка Rollbar
-rollbar.init('67cdf733f64e4527a4d20a257338864b', 'staging')
+rollbar.init({
+    'access_token': ROLLBAR_TOKEN,
+    'environment': 'staging'
+})
 
 try:
     # Симуляция ошибки
