@@ -6,7 +6,8 @@ from .models import Task, Status, CustomUser, Label
 
 @login_required
 def task_list(request):
-    filter = TaskFilter(request.GET, queryset=Task.objects.all(), request=request)
+    filter = TaskFilter(request.GET, queryset=Task.objects.all(),
+                        request=request)
     return render(request, 'tasks/tasks.html', {'filter': filter})
 
 
@@ -17,9 +18,11 @@ class TaskFilter(django_filters.FilterSet):
         super(TaskFilter, self).__init__(*args, **kwargs)
 
     status = django_filters.ModelChoiceFilter(queryset=Status.objects.all())
-    executor = django_filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
+    executor = django_filters.ModelChoiceFilter(
+        queryset=CustomUser.objects.all())
     label = django_filters.ModelChoiceFilter(queryset=Label.objects.all())
-    is_author = django_filters.BooleanFilter(method='filter_is_author', label='Только свои задачи')
+    is_author = django_filters.BooleanFilter(
+        method='filter_is_author', label='Только свои задачи')
 
     class Meta:
         model = Task

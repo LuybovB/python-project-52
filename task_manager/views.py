@@ -1,23 +1,21 @@
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
-from task_manager.forms import CustomUserCreationForm, LoginForm, StatusForm, TaskForm, LabelForm
+from task_manager.forms import (CustomUserCreationForm,
+                                LoginForm, StatusForm, TaskForm, LabelForm)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from task_manager.models import CustomUser, Status, Task, Label
-from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import logging
-from django.shortcuts import render
 from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 
 
 def index(request):
-    # a = None
-    # a.hello() # Удалено для предотвращения ошибки AttributeError
     return HttpResponse("Hello, world. You're at the pollapp index.")
 
 
@@ -87,7 +85,8 @@ def user_update_view(request, pk):
     form = CustomUserCreationForm(instance=user)
 
     if user != request.user:
-        messages.error(request, 'У вас нет прав для изменения другого пользователя.')
+        messages.error(request,
+                       'У вас нет прав для изменения другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'POST':
@@ -105,7 +104,8 @@ def user_delete_view(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if user != request.user:
-        messages.error(request, 'У вас нет прав для удаления другого пользователя.')
+        messages.error(request,
+                       'У вас нет прав для удаления другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'GET':
@@ -113,7 +113,9 @@ def user_delete_view(request, pk):
 
     if request.method == 'POST':
         if user.author_tasks.exists() or user.executor_tasks.exists():
-            messages.error(request, 'Нельзя удалить пользователя, если он является автором или исполнителем задач.')
+            messages.error(request,
+                           'Невозможно удалить пользователя,'
+                           ' потому что он используется')
             return redirect('user-list')
         else:
             user.delete()
@@ -159,14 +161,18 @@ def update_status(request, pk):
             return redirect('list_statuses')
     else:
         form = StatusForm(instance=status)
-    return render(request, 'statuses/update_status.html', {'form': form, 'status': status})
+    return render(request,
+                  'statuses/update_status.html',
+                  {'form': form, 'status': status})
 
 
 @login_required
 def delete_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
     if status.tasks.exists():
-        messages.error(request, 'Невозможно удалить статус, потому что он используется')
+        messages.error(request,
+                       'Невозможно удалить статус,'
+                       ' потому что он используется')
         return redirect('list_statuses')
 
     if request.method == 'POST':
@@ -174,36 +180,34 @@ def delete_status(request, pk):
         messages.success(request, 'Статус успешно удален')
         return redirect('list_statuses')
     else:
-        return render(request, 'statuses/delete_status.html', {'status': status})
+        return render(request,
+                      'statuses/delete_status.html',
+                      {'status': status})
 
 
 @login_required
 def task_list(request):
     tasks = Task.objects.all()
     statuses = Status.objects.all()
-    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
+    executors = CustomUser.objects.filter(
+        executor_tasks__isnull=False).distinct()
     labels = Label.objects.all()
 
-    # Фильтрация по статусу
     status_id = request.GET.get('status')
     if status_id:
         tasks = tasks.filter(status_id=status_id)
 
-    # Фильтрация по исполнителю
     executor_id = request.GET.get('executor')
     if executor_id:
         tasks = tasks.filter(executor_id=executor_id)
 
-    # Фильтрация по метке
     label_id = request.GET.get('label')
     if label_id:
         tasks = tasks.filter(label__id=label_id)
 
-    # Фильтрация для отображения только задач, созданных текущим пользователем
     if 'own_tasks' in request.GET:
         tasks = tasks.filter(author=request.user)
 
-    # Возвращаем ответ только один раз, с учетом всех фильтров
     return render(request, 'tasks/tasks.html', {
         'tasks': tasks,
         'statuses': statuses,
@@ -212,11 +216,10 @@ def task_list(request):
     })
 
 
-
 @login_required
 def task_create(request):
     form = TaskForm(request.POST or None)
-    labels = Label.objects.all()  # Получаем список всех меток
+    labels = Label.objects.all()
     if request.method == 'POST':
         logger.info('Received POST request with data: %s', request.POST)
         if form.is_valid():
@@ -224,7 +227,7 @@ def task_create(request):
             task = form.save(commit=False)
             task.author = request.user
             task.save()
-            task.labels.set(request.POST.getlist('label'))  # Сохраняем выбранные метки
+            task.label.set(request.POST.getlist('label'))
             messages.success(request, 'Задача успешно создана')
             return redirect('task_list')
         else:
@@ -235,7 +238,7 @@ def task_create(request):
         'form': form,
         'statuses': statuses,
         'users': users,
-        'labels': labels  # Добавляем метки в контекст
+        'labels': labels
     })
 
 
@@ -255,7 +258,9 @@ def task_update(request, pk):
     else:
         form = TaskForm(instance=task)
 
-    return render(request, 'tasks/task_form.html', {'form': form, 'statuses': statuses, 'users': users})
+    return render(request,
+                  'tasks/task_form.html',
+                  {'form': form, 'statuses': statuses, 'users': users})
 
 
 @login_required
@@ -284,17 +289,17 @@ def task_delete(request, pk):
 def label_delete(request, pk):
     label = get_object_or_404(Label, pk=pk)
     if request.method == 'POST':
-        if label.tasks.exists():  # Проверяем, связана ли метка с задачами
-            messages.error(request, 'Эту метку нельзя удалить, так как она связана с задачей.')
+        if label.tasks.exists():
+            messages.error(request,
+                           'Эту метку нельзя удалить,'
+                           ' так как она связана с задачей.')
             return redirect('labels-list')
         else:
             label.delete()
             messages.success(request, 'Метка успешно удалена.')
             return redirect('labels-list')
     else:
-        # Если метод GET, показываем страницу подтверждения
         return render(request, 'labels/label_delete.html', {'label': label})
-
 
 
 @login_required
@@ -322,7 +327,9 @@ def label_update(request, pk):
             messages.error(request, 'Ошибка при обновлении метки.')
     else:
         form = LabelForm(instance=label)
-    return render(request, 'labels/label_update.html', {'form': form, 'label': label})
+    return render(request,
+                  'labels/label_update.html',
+                  {'form': form, 'label': label})
 
 
 def labels_list(request):

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import IndexView, register, user_list, login_view, logout_view, user_update_view, user_delete_view
+from .views import (IndexView, register, user_list,
+                    login_view, logout_view,
+                    user_update_view, user_delete_view)
 from . import views
 
 urlpatterns = [
@@ -16,8 +18,10 @@ urlpatterns = [
     path('statuses/', views.list_statuses, name='list_statuses'),
     path('require_login/', views.require_login, name='require_login'),
     path('statuses/create/', views.create_status, name='create_status'),
-    path('statuses/<int:pk>/update/', views.update_status, name='update_status'),
-    path('statuses/<int:pk>/delete/', views.delete_status, name='delete_status'),
+    path('statuses/<int:pk>/update/', views.update_status,
+         name='update_status'),
+    path('statuses/<int:pk>/delete/', views.delete_status,
+         name='delete_status'),
     path('tasks/', views.task_list, name='task_list'),
     path('tasks/create/', views.task_create, name='task_create'),
     path('tasks/<int:pk>/update/', views.task_update, name='task_update'),

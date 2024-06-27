@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
-    'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
+    # 'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
 ]
 
 
@@ -82,16 +82,21 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.'
+            'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -107,11 +112,13 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = \
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = \
+        'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -126,10 +133,11 @@ LOCALE_PATHS = [
 LOGIN_URL = '/login/'
 
 ROLLBAR = {
-    'access_token': ROLLBAR_TOKEN,
-    'environment': 'development' if DEBUG else 'production',
+    'access_token': os.getenv('ROLLBAR_TOKEN'),
+    'environment': os.getenv('ROLLBAR_ENVIRONMENT', 'development'),
     'code_version': '1.0',
     'root': BASE_DIR,
 }
 
-rollbar.init(**ROLLBAR)
+if os.getenv('ROLLBAR_ENVIRONMENT') != 'test':
+    rollbar.init(**ROLLBAR)
