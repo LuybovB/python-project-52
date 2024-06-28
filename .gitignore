@@ -6,3 +6,10 @@ build.sh
 .idea/
 .static/
 .node_modules/
+.bash_profile
+.bashrc
+.flake8
+package-lock.json
+package.json
+poetry.lock
+users_fixture.json
