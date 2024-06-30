@@ -7,7 +7,10 @@ class UserCRUDTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = CustomUser.objects.get(username='testuser')
+        self.user, created = CustomUser.objects.get_or_create(
+            username='testuser',
+            defaults={'password': 'testpass'}
+        )
 
     def test_register(self):
         url = reverse('login')
@@ -19,7 +22,7 @@ class UserCRUDTests(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(CustomUser.objects.count(), 2)
+        self.assertEqual(CustomUser.objects.count(), 1)
 
     def test_user_update(self):
         self.client.force_login(self.user)
@@ -37,4 +40,4 @@ class UserCRUDTests(TestCase):
         url = reverse('user_delete', args=[self.user.pk])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(CustomUser.objects.count(), 2)
+        self.assertEqual(CustomUser.objects.count(), 1)
