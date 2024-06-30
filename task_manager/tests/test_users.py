@@ -22,7 +22,7 @@ class UserCRUDTests(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(CustomUser.objects.count(), 1)
+        self.assertEqual(CustomUser.objects.count(), 2)
 
     def test_user_update(self):
         self.client.force_login(self.user)
@@ -36,8 +36,11 @@ class UserCRUDTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_delete(self):
-        self.client.login(username='testuser', password='testpassword')
+        initial_count = CustomUser.objects.count()  # Сохраняем исходное количество пользователей
+        self.client.login(username='testuser', password='testpass')  # Используйте правильный пароль
         url = reverse('user_delete', args=[self.user.pk])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(CustomUser.objects.count(), 1)
+        new_count = CustomUser.objects.count()  # Получаем новое количество пользователей
+        self.assertEqual(new_count, initial_count - 1)  # Проверяем, что количество уменьшилось на одного
+
