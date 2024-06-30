@@ -1,22 +1,21 @@
 from django.test import Client, TestCase
 from django.urls import reverse
-from task_manager.models import CustomUser
+from task_manager.models import CustomUser, Status
 
 
 class UserCRUDTests(TestCase):
 
+    fixtures = ['users_fixture.json']
+
     def setUp(self):
         self.client = Client()
-        self.user, created = CustomUser.objects.get_or_create(
-            username='testuser',
-            defaults={'password': 'testpass'}
-        )
+        self.user = CustomUser.objects.get(username='testuser')
+        self.status = Status.objects.create(name='Тестовый статус')
 
     def test_register(self):
         url = reverse('login')
         data = {
             'username': 'newuser',
-            'email': 'newuser@example.com',
             'password1': 'newpassword',
             'password2': 'newpassword'
         }
@@ -32,15 +31,13 @@ class UserCRUDTests(TestCase):
             'email': 'updateduser@example.com'
         }
         response = self.client.post(url, data, follow=True)
+        messages = list(response.wsgi_request._messages)
 
         self.assertEqual(response.status_code, 200)
 
     def test_user_delete(self):
-        initial_count = CustomUser.objects.count()  # Сохраняем исходное количество пользователей
-        self.client.login(username='testuser', password='testpass')  # Используйте правильный пароль
+        self.client.login(username='testuser', password='testpassword')
         url = reverse('user_delete', args=[self.user.pk])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        new_count = CustomUser.objects.count()  # Получаем новое количество пользователей
-        self.assertEqual(new_count, initial_count - 1)  # Проверяем, что количество уменьшилось на одного
-
+        self.assertEqual(CustomUser.objects.count(), 2)

@@ -1,7 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from task_manager.models import CustomUser, Status
-
+import django
+django.setup()
 
 class StatusCRUDTests(TestCase):
 
