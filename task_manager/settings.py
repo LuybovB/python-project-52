@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task_manager',
-    # 'widget_tweaks',
     'django_bootstrap5',
 ]
 
