@@ -16,7 +16,7 @@ gunicorn = "^21.2.0"
 dj-database-url = "^2.1.0"
 django-bootstrap5 = "^23.3"
 psycopg2-binary = "^2.9.7"
-
+whitenoise = "^5.2.0"
 
 [build-system]
 requires = ["poetry-core"]
