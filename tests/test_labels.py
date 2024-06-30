@@ -1,10 +1,14 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from task_manager.models import CustomUser, Status
+from task_manager.read_json import load_data
 import django
 django.setup()
 
-class StatusCRUDTests(TestCase):
+
+class LabelCRUDTests(TestCase):
+    fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
+    test_label = load_data('test_label.json')
 
     def setUp(self):
         self.client = Client()

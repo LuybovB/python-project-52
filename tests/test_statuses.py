@@ -5,6 +5,8 @@ from task_manager.models import CustomUser, Status
 
 class UserCRUDTests(TestCase):
 
+    fixtures = ['users_fixture.json']
+
     def setUp(self):
         self.client = Client()
         self.user = CustomUser.objects.create_user(

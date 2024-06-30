@@ -5,6 +5,8 @@ from task_manager.models import CustomUser, Task, Status, Label
 
 class TaskViewTests(TestCase):
 
+    fixtures = ['users_fixture.json']
+
     def setUp(self):
         self.client = Client()
         self.user = CustomUser.objects.create_user(
