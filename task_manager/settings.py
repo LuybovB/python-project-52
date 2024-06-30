@@ -127,5 +127,7 @@ ROLLBAR = {
     'root': BASE_DIR,
 }
 
-if os.getenv('ROLLBAR_ENVIRONMENT') != 'test':
+# Инициализация Rollbar
+if os.getenv('ROLLBAR_ENVIRONMENT') != 'test' and not getattr(rollbar, '_initialized', False):
     rollbar.init(**ROLLBAR)
+    setattr(rollbar, '_initialized', True)
