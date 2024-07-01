@@ -12,7 +12,6 @@ django-widget-tweaks==1.5.0
 flake8==7.1.0
 gunicorn==21.2.0
 h11==0.14.0
--e git+https://github.com/LuybovB/python-project-52.git@a6cca1ab347cb884aa9d365d66ae239d1b0fa8fa#egg=hexlet_code
 idna==3.7
 mccabe==0.7.0
 packaging==24.1
