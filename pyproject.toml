@@ -12,7 +12,8 @@ django = "^4.2.13"
 python-dotenv = "^1.0.0"
 gunicorn = "^21.2.0"
 dj-database-url = "^2.1.0"
-#django-bootstrap5 = "^23.3"11223399
+django-bootstrap5 = "^23.3"
+django-widget-tweaks = "^1.4.1"
 
 django-bootstrap4 = "^24.3"
 
