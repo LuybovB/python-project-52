@@ -131,3 +131,8 @@ ROLLBAR = {
 if os.getenv('ROLLBAR_ENVIRONMENT') != 'test' and not getattr(rollbar, '_initialized', False):
     rollbar.init(**ROLLBAR)
     setattr(rollbar, '_initialized', True)
+
+FIXTURE_DIRS = (
+    '/путь/к/вашим/фикстурам/',
+)
+
