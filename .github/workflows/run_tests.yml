@@ -1,8 +1,8 @@
 name: run tests
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
 
 jobs:
   build:
@@ -14,15 +14,19 @@ jobs:
       - name: Install python
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8
+          python-version: 3.10
 
       - name: Install dependencies
         run: |
           pip install poetry
-          make install
+          poetry install
 
       - name: Set Environment Variable
         run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Set Database URL Environment Variable
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+
       - name: Run Tests
         run: |
           poetry run ./manage.py test
