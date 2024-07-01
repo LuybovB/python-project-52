@@ -5,11 +5,15 @@ from django.test import Client
 
 
 class StatusCRUDTests(TestCase):
-    fixtures = ['users.json', 'statuses.json']
+    @classmethod
+    def setUpTestData(cls):
+        # Загрузите фикстуры здесь
+        cls.fixtures = ['users.json', 'statuses.json']
+        cls.user = CustomUser.objects.get(username='testuser1')
 
     def setUp(self):
         self.client = Client()
-        self.user = CustomUser.objects.get(username='testuser1')
+        self.client.force_login(self.user)
 
     def test_create_status(self):
         self.client.force_login(self.user)

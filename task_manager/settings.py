@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-import rollbar
 
 load_dotenv()
 
@@ -36,15 +35,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
-    # 'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -68,18 +67,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.config(
-        default=DATABASE_URL, conn_max_age=600, conn_health_checks=True,
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
     )
+}
 
 AUTH_USER_MODEL = 'task_manager.CustomUser'
 
@@ -113,14 +108,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_STORAGE = \
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
@@ -134,3 +124,5 @@ ROLLBAR = {
     'root': BASE_DIR,
     'patch_debugview': False,
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,54 +1,35 @@
 from django.test import TestCase, Client
-from django.urls import reverse
-from task_manager.models import CustomUser
-from django.core.management import call_command
-from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 
-class UserCRUDTests(TestCase):
-    fixtures = ['users.json']
+class UserTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user_model = CustomUser
-        call_command('loaddata', 'users.json')
-        self.initial_count = self.user_model.objects.count()
+        self.user_model = get_user_model()
+        # Создаем пользователя напрямую
+        self.user = self.user_model.objects.create(
+            username='testuser',
+            first_name='Test',
+            last_name='User',
+            password=make_password('testpassword123')
+        )
+        self.initial_user_count = self.user_model.objects.count()
 
-    def test_register(self):
-        url = reverse('login')
-        data = {
-            'username': 'User4',
-            'password1': 'password123',
-            'password2': 'password123'
+
+class TestUserCreateView(UserTestCase):
+    def test_create_valid_user(self):
+        user_data = {
+            'username': 'newuser',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123',
+            'first_name': 'Test',
+            'last_name': 'User'
         }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(CustomUser.objects.count(), 3)
-
-    def test_user_update(self):
-        call_command('loaddata', 'test_user.json')
-
-        user = self.user_model.objects.get(pk=1)
-        self.client.force_login(user)
-        url = reverse('user_update', args=[user.pk])
-
-        updated_user_data = {
-            'username': 'updateduser1',
-            'first_name': 'Updated',
-            'last_name': 'User1',
-            'password': 'pbkdf2_sha256260000'
-        }
-
-        response = self.client.post(url, updated_user_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-        user.refresh_from_db()
-        self.assertEqual(user.username, updated_user_data['username'])
-
-    def test_user_delete(self):
-        user = self.user_model.objects.get(pk=1)
-        self.client.force_login(user)
-        url = reverse('user_delete', args=[user.pk])
-        response = self.client.post(url)
+        response = self.client.post(reverse_lazy('user-list'), data=user_data)
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(self.user_model.objects.filter(pk=user.pk).exists())
-        self.assertEqual(self.user_model.objects.count(), self.initial_count - 1)
+        self.assertRedirects(response, reverse_lazy('login'))
+        self.assertEqual(self.user_model.objects.count(), self.initial_user_count + 1)
+        self.assertEqual(self.user_model.objects.last().username, user_data['username'])

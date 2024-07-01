@@ -5,27 +5,30 @@ from task_manager.read_json import load_data
 
 
 class TaskViewTests(TestCase):
-    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+    @classmethod
+    def setUpTestData(cls):
+        # Загрузите фикстуры здесь
+        cls.fixtures = ['users.json', 'statuses.json', 'tasks.json']
+        cls.user = CustomUser.objects.get(username='testuser1')
+        cls.status = Status.objects.get(name='New')
+        cls.executor = CustomUser.objects.create(
+            username='executor',
+            first_name='Executor',
+            last_name='User',
+            password='pbkdf2_sha256260000'
+        )
+        cls.label = Label.objects.create(name='urgent')
+        cls.task = Task.objects.create(
+            name='Task1',
+            description='Description for Task1',
+            status=cls.status,
+            creator=cls.user,
+            executor=cls.executor
+        )
 
     def setUp(self):
         self.client = Client()
-        self.user = CustomUser.objects.get(username='testuser1')
-        self.status = Status.objects.get(name='New')
-        self.executor, created = CustomUser.objects.get_or_create(
-            username='executor',
-            defaults={'first_name': 'Executor', 'last_name': 'User', 'password': 'pbkdf2_sha256260000'}
-        )
-        self.label, created = Label.objects.get_or_create(name='urgent')
-
-        # Загружаем задачи из фикстуры или создаем задачу
-        self.task, created = Task.objects.get_or_create(
-            name='Task1',
-            defaults={'description': 'Description for Task1', 'status': self.status, 'creator': self.user,
-                      'executor': self.executor}
-        )
-
-        # Загружаем данные из test_task.json
-        self.test_task_data = load_data('test_task.json')
+        self.client.force_login(self.user)
 
     def test_task_list_view(self):
         self.client.force_login(self.user)

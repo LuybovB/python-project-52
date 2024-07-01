@@ -4,13 +4,16 @@ from task_manager.models import CustomUser, Label
 
 
 class LabelCRUDTests(TestCase):
-    fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
+    @classmethod
+    def setUpTestData(cls):
+        # Загрузите фикстуры здесь
+        cls.fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
+        cls.user = CustomUser.objects.get(username='testuser1')
+        cls.initial_label = Label.objects.get(name='urgent')
 
     def setUp(self):
         self.client = Client()
-        self.user = CustomUser.objects.get(username='testuser1')
         self.client.force_login(self.user)
-        self.initial_label = Label.objects.get(name='urgent')
 
     def test_create_label(self):
         new_label_data = {'name': 'label1'}
