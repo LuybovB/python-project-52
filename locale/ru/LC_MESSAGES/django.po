@@ -145,8 +145,14 @@ msgstr "Создать статус"
 msgid "Deletion of Status"
 msgstr "Удаление статуса"
 
+msgid "Deletion of Label"
+msgstr "Удаление метки"
+
 msgid "Are you sure you want to delete the status"
 msgstr "Вы уверены, что хотите удалить статус"
+
+msgid "Are you sure you want to delete the label"
+msgstr "Вы уверены, что хотите удалить метку"
 
 msgid "Create"
 msgstr "Создать"

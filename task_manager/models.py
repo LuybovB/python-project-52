@@ -50,7 +50,6 @@ class Task(models.Model):
                                  verbose_name=_('Executor'))
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Дата создания'))
-    updated_at = models.DateTimeField(auto_now=True)
     label = models.ManyToManyField(Label, related_name='label')
 
     def __str__(self):

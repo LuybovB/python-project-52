@@ -1,32 +1,33 @@
+
 [
   {
-    "model": "users.user",
+    "model": "task_manager.customuser",
     "pk": 1,
     "fields": {
-      "username": "User1",
-      "first_name": "User1_first_name",
-      "last_name": "User1_last_name",
-      "password": "date1303"
+      "username": "testuser1",
+      "first_name": "Test",
+      "last_name": "User1",
+      "password": "pbkdf2_sha256260000"
     }
   },
   {
-    "model": "users.user",
+    "model": "task_manager.customuser",
     "pk": 2,
     "fields": {
-      "username": "User2",
-      "first_name": "User2_first_name",
-      "last_name": "User2_last_name",
-      "password": "date2501"
+      "username": "testuser2",
+      "first_name": "Test",
+      "last_name": "User2",
+      "password": "pbkdf2_sha256260000"
     }
   },
-    {
-    "model": "users.user",
+  {
+    "model": "task_manager.customuser",
     "pk": 3,
     "fields": {
-      "username": "User3",
-      "first_name": "User3_first_name",
-      "last_name": "User3_last_name",
-      "password": "date1234"
+      "username": "testuser3",
+      "first_name": "Test",
+      "last_name": "User3",
+      "password": "pbkdf2_sha256260000"
     }
   }
 ]

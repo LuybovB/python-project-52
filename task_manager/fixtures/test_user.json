@@ -1,32 +1,32 @@
-{
-  "create": {
-    "valid": {
-      "username": "User4",
-      "first_name": "User4_first_name",
-      "last_name": "User4_last_name",
-      "password1": "password1986",
-      "password2": "password1986"
-    },
-    "invalid": {
-      "username": "User&",
-      "first_name": "User4_first_name",
-      "last_name": "User4_last_name",
-      "password1": "password",
-      "password2": "password"
-    },
-    "password_missing": {
-      "username": "User5",
-      "first_name": "User5_first_name",
-      "last_name": "User5_last_name",
-      "password1": "",
-      "password2": ""
+[
+  {
+    "model": "task_manager.customuser",
+    "pk": 1,
+    "fields": {
+      "username": "updateduser1",
+      "first_name": "Updated",
+      "last_name": "User1",
+      "password": "pbkdf2_sha256260000$"
     }
   },
-  "update": {
-    "username": "User7",
-    "first_name": "User7_first_name",
-    "last_name": "User7_last_name",
-    "password1": "password2016",
-    "password2": "password2016"
+  {
+    "model": "task_manager.customuser",
+    "pk": 2,
+    "fields": {
+      "username": "updateduser2",
+      "first_name": "Updated",
+      "last_name": "User2",
+      "password": "pbkdf2_sha256260000"
+    }
+  },
+  {
+    "model": "task_manager.customuser",
+    "pk": 3,
+    "fields": {
+      "username": "updateduser3",
+      "first_name": "Updated",
+      "last_name": "User3",
+      "password": "pbkdf2_sha256260000"
+    }
   }
-}
+]

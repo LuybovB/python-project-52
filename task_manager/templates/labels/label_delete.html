@@ -1,13 +1,14 @@
 
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% load i18n %}
 
 {% block content %}
-  <h2>{% trans "Deletion of Status" %}</h2>
+  <h2>{% trans "Deletion of Label" %}</h2>
   <form method="post">
     {% csrf_token %}
-    <p>{% trans "Are you sure you want to delete the status" %} "{{ label.name }}"?</p>
+    <p>{% trans "Are you sure you want to delete the label" %} "{{ label.name }}"?</p>
     <input type="submit" name="confirm_delete" value="{% trans "Yes, delete" %}" style="background-color: red; color: white;" >
   </form>
 {% endblock %}

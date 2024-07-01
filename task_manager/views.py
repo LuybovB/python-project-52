@@ -289,7 +289,7 @@ def task_delete(request, pk):
 def label_delete(request, pk):
     label = get_object_or_404(Label, pk=pk)
     if request.method == 'POST':
-        if label.tasks.exists():
+        if label.label.exists():
             messages.error(request,
                            'Эту метку нельзя удалить,'
                            ' так как она связана с задачей.')

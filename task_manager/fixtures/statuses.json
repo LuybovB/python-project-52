@@ -1,6 +1,6 @@
 [
   {
-    "model": "statuses.status",
+    "model": "task_manager.status",
     "pk": 1,
     "fields": {
       "name": "New",
@@ -8,7 +8,7 @@
     }
   },
   {
-    "model": "statuses.status",
+    "model": "task_manager.status",
     "pk": 2,
     "fields": {
       "name": "In job",
@@ -16,7 +16,7 @@
     }
   },
   {
-    "model": "statuses.status",
+    "model": "task_manager.status",
     "pk": 3,
     "fields": {
       "name": "Finished",
