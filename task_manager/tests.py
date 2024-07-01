@@ -2,9 +2,19 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from .models import CustomUser, Status
 from django.contrib.messages import get_messages
-
+from django.contrib.auth import get_user_model
 
 class UserCRUDTests(TestCase):
+
+    def create_users(db):
+        User = get_user_model()
+        User.objects.create_user(username='user1', password='testpass123')
+        User.objects.create_user(username='user2', password='testpass123')
+        User.objects.create_user(username='user3', password='testpass123')
+
+    def test_load_users(create_users):
+        users = get_user_model().objects.all()
+        assert len(users) == 3
 
     fixtures = ['users_fixture.json']
 
