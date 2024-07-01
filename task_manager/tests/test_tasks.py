@@ -9,14 +9,8 @@ class TaskViewTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-
-        # Загружаем пользователя
         self.user = CustomUser.objects.get(username='testuser1')
-
-        # Загружаем статус
         self.status = Status.objects.get(name='New')
-
-        # Загружаем исполнителя
         self.executor, created = CustomUser.objects.get_or_create(
             username='executor',
             defaults={'first_name': 'Executor', 'last_name': 'User', 'password': 'pbkdf2_sha256260000'}
