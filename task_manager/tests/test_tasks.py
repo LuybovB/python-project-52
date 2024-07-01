@@ -15,8 +15,6 @@ class TaskViewTests(TestCase):
             username='executor',
             defaults={'first_name': 'Executor', 'last_name': 'User', 'password': 'pbkdf2_sha256260000'}
         )
-
-        # Создаем ярлык (если не существует)
         self.label, created = Label.objects.get_or_create(name='urgent')
 
         # Загружаем задачи из фикстуры или создаем задачу
