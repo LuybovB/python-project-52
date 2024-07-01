@@ -21,7 +21,6 @@ pycodestyle==2.12.0
 pyflakes==3.2.0
 python-dotenv==1.0.1
 requests==2.32.3
-rollbar==1.0.0
 soupsieve==2.5
 sqlparse==0.5.0
 typing_extensions==4.12.2
