@@ -8,11 +8,8 @@ class LabelCRUDTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        # Загружаем пользователя из фикстур
         self.user = CustomUser.objects.get(username='testuser1')
         self.client.force_login(self.user)
-
-        # Загружаем метку с именем из фикстур
         self.initial_label = Label.objects.get(name='urgent')
 
     def test_create_label(self):
