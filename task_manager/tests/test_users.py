@@ -3,10 +3,13 @@ from django.urls import reverse
 from task_manager.models import CustomUser
 from django.core.management import call_command
 from django.utils.translation import gettext_lazy as _
+from task_manager.read_json import load_data
+from django.core.exceptions import ObjectDoesNotExist
 
 
-class UserCRUDTests(TestCase):
+class UserTestCase(TestCase):
     fixtures = ['users.json']
+    test_user = load_data('test_user.json')
 
     def setUp(self):
         self.client = Client()
@@ -15,15 +18,16 @@ class UserCRUDTests(TestCase):
         self.initial_count = self.user_model.objects.count()
 
     def test_register(self):
-        url = reverse('login')
+        url = reverse('register')
         data = {
             'username': 'User4',
             'password1': 'password123',
             'password2': 'password123'
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(CustomUser.objects.count(), 3)
+        self.assertEqual(response.status_code, 302)  # Assuming redirection after a successful registration
+        self.assertEqual(CustomUser.objects.count(), self.initial_count + 1)
+        self.assertTrue(CustomUser.objects.filter(username='User4').exists())
 
     def test_user_update(self):
         call_command('loaddata', 'test_user.json')
@@ -50,5 +54,8 @@ class UserCRUDTests(TestCase):
         url = reverse('user_delete', args=[user.pk])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(self.user_model.objects.filter(pk=user.pk).exists())
+
+        with self.assertRaises(ObjectDoesNotExist):
+            self.user_model.objects.get(pk=user.pk)
+
         self.assertEqual(self.user_model.objects.count(), self.initial_count - 1)
