@@ -122,17 +122,8 @@ LOCALE_PATHS = [
 LOGIN_URL = '/login/'
 
 ROLLBAR = {
-    'access_token': ROLLBAR_TOKEN,
-    'environment': os.getenv('ROLLBAR_ENVIRONMENT', 'development'),
-    'code_version': '1.0',
+    'access_token': os.getenv('ACCESS_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
     'root': BASE_DIR,
+    'patch_debugview': False,
 }
-
-if os.getenv('ROLLBAR_ENVIRONMENT') != 'test' and not getattr(rollbar, '_initialized', False):
-    rollbar.init(**ROLLBAR)
-    setattr(rollbar, '_initialized', True)
-
-FIXTURE_DIRS = (
-    '/путь/к/вашим/фикстурам/',
-)
-
