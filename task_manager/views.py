@@ -34,17 +34,17 @@ def register(request):
             messages.success(request, 'Пользователь успешно зарегистрирован')
             user.is_active = True
             user.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('root')
-            else:
-                return redirect('login')
+            # Удалите следующие строки, чтобы предотвратить автоматический вход пользователя
+            # username = form.cleaned_data.get('username')
+            # password = form.cleaned_data.get('password1')
+            # user = authenticate(request, username=username, password=password)
+            # if user is not None:
+            #     login(request, user)
+            return redirect('login')  # Перенаправление на страницу входа
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
 
 
 def user_list(request):
