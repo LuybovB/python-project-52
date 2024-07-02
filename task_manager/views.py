@@ -288,7 +288,19 @@ def task_delete(request, pk):
     return render(request, 'tasks/task_delete.html', {'task': task})
 
 
+
 @login_required
+def label_create(request):
+    if request.method == 'POST':
+        form = LabelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Метка успешно создана.')
+            return redirect('labels-list')
+    else:
+        form = LabelForm()
+    return render(request, 'labels/label_create.html', {'form': form})
+
 def label_delete(request, pk):
     label = get_object_or_404(Label, pk=pk)
     if request.method == 'POST':
@@ -303,19 +315,6 @@ def label_delete(request, pk):
             return redirect('labels-list')
     else:
         return render(request, 'labels/label_delete.html', {'label': label})
-
-
-@login_required
-def label_create(request):
-    if request.method == 'POST':
-        form = LabelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Метка успешно создана.')
-            return redirect('labels-list')
-    else:
-        form = LabelForm()
-    return render(request, 'labels/label_create.html', {'form': form})
 
 
 def label_update(request, pk):

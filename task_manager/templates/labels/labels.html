@@ -3,10 +3,12 @@
 {% load static %}
 {% load i18n %}
 
+
 {% block content %}
   <div class="labels-list-container">
     <h2>{% trans 'Labels' %}</h2>
-    <form method="get" action="{% url 'label_create' %}" class="labels-list-form">
+    <!-- Измените метод на POST -->
+    <form method="post" action="{% url 'label_create' %}" class="labels-list-form">
       {% csrf_token %}
       <button type="submit" class="btn btn-primary">{% trans 'Create Label' %}</button>
     </form>

@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
 {% load i18n %}
 {% block content %}
-{% load widget_tweaks %}
 <div class="container mt-5">
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Удаление всех скриптов
+    document.querySelectorAll('script').forEach(function(script) {
+        script.remove();
+    });
+});
+</script>
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h4 class="card-title text-left mb-3">{% trans 'Create Label' %}</h4>
-                    <form method="post" action="{% url 'label_create' %}" class="form-input">
+                    <h4 class="card-title text-center mb-4">{% trans 'Create Label' %}</h4>
+                    <form method="post" action="{% url 'label_create' %}">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.name.label  }}
-                            {{ form.name|add_class:"form-control" }}
+                            <label for="id_name">{% trans 'Name' %}</label>
+                            <input type="text" name="name" class="form-control" id="id_name" placeholder="{% trans 'Name' %}">
                         </div>
-                        {{ form.other_fields|add_class:"form-control" }}
                         <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Create' %}</button>
                     </form>
                 </div>
