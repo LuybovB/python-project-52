@@ -323,7 +323,7 @@ def label_update(request, pk):
         form = LabelForm(request.POST, instance=label)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Метка успешно обновлена.')
+            messages.success(request, 'Метка успешно изменена')
             return redirect('labels-list')
         else:
             messages.error(request, 'Ошибка при обновлении метки.')
