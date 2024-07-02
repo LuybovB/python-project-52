@@ -59,7 +59,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Вы загологинены')
+                messages.success(request, 'Вы залогинены')
                 return redirect('root')
             else:
                 messages.error(request, 'Неверное имя пользователя или пароль')
@@ -75,7 +75,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Вы Разлогинены')
+    messages.success(request, 'Вы pазлогинены')
     return redirect('root')  # Указать желаемый URL вместо 'root'
 
 
