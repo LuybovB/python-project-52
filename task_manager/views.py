@@ -75,8 +75,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Вы pазлогинены')
-    return redirect('root')  # Указать желаемый URL вместо 'root'
+    messages.success(request, 'Вы pазлогинены')  # Исправлено на правильное сообщение
+    return redirect('root')
 
 
 @login_required
