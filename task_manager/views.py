@@ -124,7 +124,7 @@ def user_delete_view(request, pk):
             user.delete()
             logout(request)
             messages.success(request, 'Пользователь успешно удален.')
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('user-list'))
 
     return redirect('user-list')
 
