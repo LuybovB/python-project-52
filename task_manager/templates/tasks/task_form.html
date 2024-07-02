@@ -3,52 +3,56 @@
 {% load i18n %}
 
 {% block content %}
-  <div class="task-create-container">
-    <h2>{% trans 'Task Create' %}</h2>
-    <form method="post" class="task-create-form">
-      {% csrf_token %}
-      {% for field in form %}
-        {% if field.name != 'status' %}
-          <div class="form-group">
-            {% if field.name == 'name' %}
-              <label for="id_name">{% trans 'Name' %}: </label>
-              <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Name' %}">
-            {% elif field.name == 'description' %}
-              <label for="id_description">{% trans 'Overview' %}: </label>
-              <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Overview' %}" rows="10"></textarea>
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
+<div class="task-create-container">
+  <h2>{% trans 'Task Create' %}</h2>
+  <form method="post" class="task-create-form">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name != 'status' %}
+        <div class="form-group">
+          {% if field.name == 'name' %}
+            {% trans 'Name' as name_label %}
+            <label for="id_name">{{ name_label|cut:":" }}</label>
+            <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Name' %}">
+          {% elif field.name == 'description' %}
+            {% trans 'Overview' as overview_label %}
+            <label for="id_description">{{ overview_label|cut:":" }}</label>
+            <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Overview' %}" rows="10"></textarea>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </form>
+</div>
+
 
 
 
 
 
       <div class="form-group">
-        <label for="status">{% trans 'Status' %}:</label>
+        {% trans 'Status' as translated_status %}
+<label for="status">{{ translated_status|cut:":" }}</label>
+
+
         <select name="status" id="status" class="form-control">
-          <option value="" selected disabled>----</option>
-          <option value="" disabled>{% trans 'Select Status' %}</option> <!-- Этот пункт будет отображаться по умолчанию -->
+          <option value="" selected disabled>---------</option>
           {% for status in statuses %}
             <option value="{{ status.id }}">{{ status.name }}</option>
           {% empty %}
-            <option value="" disabled>{% trans 'No available statuses' %}</option>
           {% endfor %}
         </select>
       </div>
 
 
-
 <div class="form-group">
-  <label for="executor">{% trans 'Executor' %}:</label>
+<label for="executor">{% trans form.executor.label|cut:":" %}</label>
+
   <select name="executor" id="executor" class="form-control" required>
-    <option value="" selected disabled>----</option>
-    <option value="" disabled>{% trans 'Choose a performer' %}</option>
+    <option value="" selected disabled>---------</option>
     {% for user in users %}
       <option value="{{ user.id }}">{{ user.username }}</option>
     {% empty %}
-      <option value="" disabled>{% trans 'No available Executors' %}</option>
     {% endfor %}
   </select>
 </div>

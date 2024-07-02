@@ -110,7 +110,7 @@ msgid "Hexlet"
 msgstr "Хекслет"
 
 msgid "Task Create"
-msgstr "Создание задачи"
+msgstr "Создать задачу"
 
 msgid "Name"
 msgstr "Имя"
