@@ -17,6 +17,9 @@ msgstr "Исполнитель"
 msgid "Status"
 msgstr "Статус"
 
+msgid "Statuses"
+msgstr "Статусы"
+
 msgid "Created at"
 msgstr "Создано"
 
