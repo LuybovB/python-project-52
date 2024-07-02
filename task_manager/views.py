@@ -96,7 +96,7 @@ def user_update_view(request, pk):
         form = CustomUserCreationForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Пользователь успешно обновлен.')
+            messages.success(request, 'Пользователь успешно изменен')
             return redirect('user-list')
 
     return render(request, 'users/user_update.html', {'form': form})
