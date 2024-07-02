@@ -1,24 +1,18 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-{% load widget_tweaks %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h4 class="card-title text-left mb-3">{% trans 'Create Status' %}</h4>
-                    <form method="post" action="{% url 'create_status' %}" class="form-input">
+                    <h4 class="card-title text-center mb-4">{% trans 'Create Status' %}</h4>
+                    <form method="post" action="{% url 'create_status' %}">
                         {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-group mb-3">
-                                {{ field.label }}
-                                {{ field | add_class:"form-control" }}
-                                {% if field.help_text %}
-                                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                        <div class="form-group mb-3">
+                            <label for="id_name">{% trans 'Name' %}</label>
+                            <input type="text" name="name" class="form-control" id="id_name" placeholder="{% trans 'Name' %}">
+                        </div>
                         <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Create' %}</button>
                     </form>
                 </div>
