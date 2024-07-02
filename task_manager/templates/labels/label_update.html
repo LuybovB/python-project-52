@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
 {% load i18n %}
 {% load widget_tweaks %}
 
@@ -13,17 +12,14 @@
                     <form method="post" action="{% url 'label_update' label.id %}" class="form-input">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.name.label }}
-                            {{ form.name|add_class:"form-control" }}
+                            <label for="id_name">{% trans 'Name' %}</label>
+                            <input type="text" name="name" class="form-control"
+                                   id="id_name"
+                                   value="{{ label.name }}"
+                                   maxlength="100"
+                                   placeholder="{% trans 'Имя' %}"
+                                   required>
                         </div>
-                        {% for field in form.visible_fields %}
-                            {% if field.name != 'name' %}
-                                <div class="form-group mb-3">
-                                    {{ field.label_tag }}
-                                    {{ field|add_class:"form-control" }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
                         <button type="submit" class="btn btn-primary btn-block mt-3">{% trans 'Edit' %}</button>
                     </form>
                 </div>
