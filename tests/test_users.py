@@ -1,12 +1,14 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.contrib.messages import get_messages
-
-User = get_user_model()
+from django.urls import reverse
+from django.test import TestCase
+from task_manager.models import CustomUser
 
 
 class UserRegistrationTest(TestCase):
+    fixtures = ['users_fixture.json']
+
     def test_register_function(self):
         # URL для регистрации
         registration_url = reverse('register')
@@ -15,13 +17,13 @@ class UserRegistrationTest(TestCase):
             'first_name': 'John',
             'last_name': 'Smith',
             'username': 'newtestuser',
-            'password': 'newpassword123',
+            'password': 'newpassword123',  # Используем 'password1' вместо 'password'
             'password2': 'newpassword123'
         }
         # Отправка данных на сервер
         response = self.client.post(registration_url, data=registration_data)
         # Проверка перенаправления после успешной регистрации
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('login'), status_code=302, target_status_code=200)
         # Проверка, что пользователь создан
         self.assertTrue(User.objects.filter(username='newtestuser').exists())
         # Проверка, что пользователь аутентифицирован
