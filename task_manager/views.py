@@ -11,6 +11,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import logging
 from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy
 
 logger = logging.getLogger(__name__)
 
@@ -75,9 +77,9 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Вы pазлогинены')  # Исправлено на правильное сообщение
-    return redirect('root')
-
+    messages.success(request, gettext_lazy('Вы разлогинены'))
+    next_page = reverse_lazy('root')  # Указать желаемый URL вместо 'root'
+    return redirect(next_page)
 
 @login_required
 def user_update_view(request, pk):
