@@ -9,7 +9,7 @@ DEFAULT_CHARSET = 'utf-8'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = False
 
 MESSAGE_TAGS = {
     'ERROR': 'danger',

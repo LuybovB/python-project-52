@@ -35,8 +35,9 @@ class CustomUserCreationForm(forms.ModelForm):
         label=_('Пароль'),
         help_text=_(
             '• Ваш пароль должен содержать как минимум 3 символа.'),
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': _('Пароль')}))
+        widget=forms.PasswordInput(  # Используйте PasswordInput здесь
+            attrs={'class': 'form-control', 'placeholder': _('Пароль')})
+    )
 
     password2 = forms.CharField(
         label=_('Подтверждение пароля'),

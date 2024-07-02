@@ -81,6 +81,7 @@ def logout_view(request):
     next_page = reverse_lazy('root')  # Указать желаемый URL вместо 'root'
     return redirect(next_page)
 
+
 @login_required
 def user_update_view(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
