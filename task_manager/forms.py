@@ -109,6 +109,11 @@ class StatusForm(forms.ModelForm):
                                                     'placeholder': 'Имя'})
         }
 
+    def __init__(self, *args, **kwargs):
+        super(StatusForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.name:
+            self.fields['name'].widget.attrs['placeholder'] = self.instance.name
+
 
 class TaskForm(forms.ModelForm):
     status = forms.ModelChoiceField(

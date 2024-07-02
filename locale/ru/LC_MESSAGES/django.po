@@ -33,7 +33,7 @@ msgid "Edit"
 msgstr "Изменить"
 
 msgid "Edit status"
-msgstr "Изменить статус"
+msgstr "Изменение статуса"
 
 msgid "Delete"
 msgstr "Удалить"
