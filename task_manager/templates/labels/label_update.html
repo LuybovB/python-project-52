@@ -13,7 +13,7 @@
                     <form method="post" action="{% url 'label_update' label.id %}" class="form-input">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.name.label_tag }}
+                            {{ form.name.label }}
                             {{ form.name|add_class:"form-control" }}
                         </div>
                         {% for field in form.visible_fields %}
