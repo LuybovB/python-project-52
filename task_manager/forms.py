@@ -31,7 +31,7 @@ class CustomUserCreationForm(forms.ModelForm):
                 'placeholder': _('Имя пользователя')
             })
     )
-    password = forms.CharField(
+    password1 = forms.CharField(
         label=_('Пароль'),
         help_text=_(
             '• Ваш пароль должен содержать как минимум 3 символа.'),
@@ -51,7 +51,7 @@ class CustomUserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        password = self.cleaned_data["password"]
+        password = self.cleaned_data["password1"]
         user.set_password(password)
         if commit:
             user.save()

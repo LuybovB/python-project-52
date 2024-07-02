@@ -10,6 +10,11 @@ class UserRegistrationTest(TestCase):
     fixtures = ['users_fixture.json']
 
     def test_register_function(self):
+        # Здесь ваш код для теста...
+        # Вывод всех пользователей после загрузки фикстуры
+        print(User.objects.all())
+
+    def test_register_function(self):
         # URL для регистрации
         registration_url = reverse('register')
         # Данные для регистрации нового пользователя
