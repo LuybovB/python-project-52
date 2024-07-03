@@ -3,9 +3,11 @@
 {% load i18n %}
 
 {% block content %}
+
+
 <div class="task-create-container">
   <h2>{% trans 'Task Create' %}</h2>
-  <form method="post" class="task-create-form" id="task-create-form">
+  <form method="post" class="task-create-form">
     {% csrf_token %}
 
     <!-- Поле для name -->
@@ -26,7 +28,7 @@
     <div class="form-group">
       {% trans 'Status' as translated_status %}
       <label for="status">{{ translated_status|cut:":" }}</label>
-      <select name="status" id="status" class="form-control">
+      <select name="status" id="status" class="form-select">
         <option value="" selected disabled>---------</option>
         {% for status in statuses %}
           <option value="{{ status.id }}">{{ status.name }}</option>
@@ -36,39 +38,51 @@
 
     <!-- Поле для executor -->
     <div class="form-group">
-      <label for="executor">{% trans "Executor" %}</label>
-      <select name="executor" id="executor" class="form-control" required>
-        <option value="" selected disabled>---------</option>
-        {% for user in users %}
-          <option value="{{ user.id }}">{{ user.username }}</option>
-        {% endfor %}
-      </select>
-    </div>
+  <label for="id_executor">{% trans "Executor" %}</label>
+  <select name="executor" id="id_executor" class="form-select">
+    <option value="" selected disabled>---------</option>
+    {% for user in users %}
+      <option value="{{ user.id }}">{{ user.username }}</option>
+    {% endfor %}
+  </select>
+</div>
 
     <!-- Поле для labels -->
     <div class="form-group">
       <label for="label">{% trans 'Labels' %}</label>
-      <select multiple id="label" name="label" class="form-control form-control-sm">
+      <select id="label" name="label" class="form-control form-control-sm" multiple>
         {% for label in labels %}
           <option value="{{ label.id }}">{{ label.name }}</option>
         {% endfor %}
       </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+    <button type="submit" class="btn btn-primary mt-3">{% trans 'Save' %}</button>
   </form>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Просто небольшой хак, чтобы убедиться, что все элементы загрузились
-    setTimeout(() => {
-        console.log("Elements should be loaded now.");
-    }, 3000);
+  function checkElementsLoaded() {
+    const executorElement = document.getElementById('executor');
+    const statusElement = document.getElementById('status');
+    const nameElement = document.getElementById('id_name');
+    const descriptionElement = document.getElementById('id_description');
+
+    if (executorElement && statusElement && nameElement && descriptionElement) {
+      console.log('All elements are loaded');
+    } else {
+      console.log('One or more elements are not loaded');
+    }
+  }
+
+  setTimeout(() => {
+    checkElementsLoaded();
+  }, 2000); // ждем 2 секунды для полной загрузки всех элементов
 });
 </script>
 {% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" href="{% static 'css/task-create.css' %}">
+<link rel="stylesheet" href="{% static 'css/task-create.css' %}">
 {% endblock %}

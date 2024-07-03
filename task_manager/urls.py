@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (IndexView, register, user_list,
                     login_view, logout_view,
                     user_update_view, user_delete_view)
 from . import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,3 +35,5 @@ urlpatterns = [
     path('labels/<int:pk>/update/', views.label_update, name='label_update'),
     path('labels/<int:pk>/delete/', views.label_delete, name='label_delete'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
