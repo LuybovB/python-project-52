@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+
 {% block content %}
   <h2>{% trans 'Tasks' %}</h2>
   <a href="{% url 'task_create' %}" class="btn btn-success mb-3">{% trans 'Create task' %}</a>
@@ -8,11 +9,11 @@
     <!-- Фильтр Статус -->
     <div class="form-group mb-2">
       <label class="form-label" for="id_status">{% trans 'Status' %}</label>
-      <select name="status" class="form-select ml-2 mr-3 is-valid" id="id_status">
-        <option value="" {% if not request.GET.status %}selected{% endif %} disabled>---------</option>
-        {% for status in statuses %}
-          <option value="{{ status.id }}" {% if request.GET.status == status.id|stringformat:"s" %}selected{% endif %}>
-            {{ status.name }}
+      <select name="status" class="form-select ml-2 mr-3 {% if request.GET.status or request.GET.status == "" %}is-valid{% endif %}" id="id_status">
+        <option value="" {% if request.GET.status == "" or not request.GET.status %}selected{% endif %}>---------</option>
+        {% for status_obj in statuses %}
+          <option value="{{ status_obj.id }}" {% if request.GET.status == status_obj.id|stringformat:"s" %}selected{% endif %}>
+            {{ status_obj.name }}
           </option>
         {% empty %}
           <option value="" disabled>{% trans 'No available statuses' %}</option>
@@ -23,11 +24,11 @@
     <!-- Фильтр Исполнитель -->
     <div class="form-group mb-2">
       <label class="form-label" for="id_executor">{% trans 'Executor' %}</label>
-      <select name="executor" class="form-select mr-3 ml-2 is-valid" id="id_executor">
-        <option value="" {% if not request.GET.executor %}selected{% endif %} disabled>---------</option>
-        {% for executor in executors %}
-          <option value="{{ executor.id }}" {% if request.GET.executor == executor.id|stringformat:"s" %}selected{% endif %}>
-            {{ executor.get_full_name }}
+      <select name="executor" class="form-select mr-3 ml-2 {% if request.GET.executor or request.GET.executor == "" %}is-valid{% endif %}" id="id_executor">
+        <option value="" {% if request.GET.executor == "" or not request.GET.executor %}selected{% endif %}>---------</option>
+        {% for executor_obj in executors %}
+          <option value="{{ executor_obj.id }}" {% if request.GET.executor == executor_obj.id|stringformat:"s" %}selected{% endif %}>
+            {{ executor_obj.get_full_name }}
           </option>
         {% empty %}
           <option value="" disabled>{% trans 'No available executors' %}</option>
@@ -38,11 +39,11 @@
     <!-- Фильтр Метка -->
     <div class="form-group mb-2">
       <label class="form-label" for="id_label">{% trans 'Label' %}</label>
-      <select name="label" class="form-select mr-3 ml-2 is-valid" id="id_label">
-        <option value="" {% if not request.GET.label %}selected{% endif %} disabled>---------</option>
-        {% for label in labels %}
-          <option value="{{ label.id }}" {% if request.GET.label == label.id|stringformat:"s" %}selected{% endif %}>
-            {{ label.name }}
+      <select name="label" class="form-select mr-3 ml-2 {% if request.GET.label or request.GET.label == "" %}is-valid{% endif %}" id="id_label">
+        <option value="" {% if request.GET.label == "" or not request.GET.label %}selected{% endif %}>---------</option>
+        {% for label_obj in labels %}
+          <option value="{{ label_obj.id }}" {% if request.GET.label == label_obj.id|stringformat:"s" %}selected{% endif %}>
+            {{ label_obj.name }}
           </option>
         {% empty %}
           <option value="" disabled>{% trans 'No available labels' %}</option>
@@ -53,14 +54,14 @@
     <!-- Фильтр Только свои задачи -->
     <div class="form-group mb-2">
       <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
-      <label for="own_tasks">{% trans 'Only my tasks' %}</label>
+      <label for="own_tasks" class="form-label {% if request.GET.own_tasks != None %}is-valid{% endif %}">{% trans 'Only my tasks' %}</label>
     </div>
 
     <!-- Кнопка Показать -->
     <button type="submit" class="btn btn-primary mb-2">{% trans 'Show' %}</button>
   </form>
 
-   <table class="table table-striped mt-4">
+  <table class="table table-striped mt-4">
     <thead>
       <tr>
         <th scope="col">{% trans 'ID' %}</th>
