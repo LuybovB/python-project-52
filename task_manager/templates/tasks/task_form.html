@@ -26,20 +26,20 @@
     </div>
 
     <!-- Поле для description -->
-    <div class="form-group">
-      {% trans 'Overview' as description_label %}
-      <label for="id_description">{{ description_label|cut:":" }}</label>
-      <textarea id="id_description"
-                name="description"
-                class="form-control"
-                placeholder="{% trans 'Overview' %}"
-                rows="10"
-                required
-                aria-required="true"
-                oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
-                oninput="setCustomValidity('')">
-      </textarea>
-    </div>
+   <div class="form-group">
+  {% trans 'Overview' as description_label %}
+  <label for="id_description">{{ description_label|cut:":" }}</label>
+  <textarea id="id_description"
+            name="description"
+            class="form-control"
+            placeholder="{% trans 'Overview' %}"
+            rows="10"
+            required
+            aria-required="true"
+            oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
+            oninput="setCustomValidity('')">{{ form.description.value|default:'' }}</textarea>
+  {{ form.description.errors }}
+</div>
 
     <!-- Поле для status -->
    <div class="mb-3"><label class="form-label" for="id_status">Статус</label><select name="status" class="form-select" required="" id="id_status">
@@ -51,9 +51,10 @@
     </div>
 
     <!-- Поле для executor -->
+<!-- Поле для executor -->
 <div class="form-group">
   <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
-  <select name="executor" id="id_executor" class="form-select" required>
+  <select name="executor" id="id_executor" class="form-select">
     <option value="">---------</option>
     {% for user in users %}
       <option value="{{ user.id }}">{{ user.username }}</option>
@@ -75,26 +76,6 @@
   </form>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  function checkElementsLoaded() {
-    const executorElement = document.getElementById('executor');
-    const statusElement = document.getElementById('status');
-    const nameElement = document.getElementById('id_name');
-    const descriptionElement = document.getElementById('id_description');
-
-    if (executorElement && statusElement && nameElement && descriptionElement) {
-      console.log('All elements are loaded');
-    } else {
-      console.log('One or more elements are not loaded');
-    }
-  }
-
-  setTimeout(() => {
-    checkElementsLoaded();
-  }, 2000); // ждем 2 секунды для полной загрузки всех элементов
-});
-</script>
 {% endblock %}
 
 {% block css %}
