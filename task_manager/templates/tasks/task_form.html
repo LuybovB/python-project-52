@@ -25,10 +25,7 @@
     </div>
 
     <!-- Поле для status -->
-    <div class="form-group">
-      {% trans 'Status' as translated_status %}
-      <label for="status">{{ translated_status|cut:":" }}</label>
-      <select name="status" id="status" class="form-select">
+   <div class="mb-3"><label class="form-label" for="id_status">Статус</label><select name="status" class="form-select" required="" id="id_status">
         <option value="" selected disabled>---------</option>
         {% for status in statuses %}
           <option value="{{ status.id }}">{{ status.name }}</option>
@@ -38,7 +35,7 @@
 
     <!-- Поле для executor -->
     <div class="form-group">
-  <label for="id_executor">{% trans "Executor" %}</label>
+      <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
   <select name="executor" id="id_executor" class="form-select">
     <option value="" selected disabled>---------</option>
     {% for user in users %}
