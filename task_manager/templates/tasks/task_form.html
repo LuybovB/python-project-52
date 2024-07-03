@@ -7,63 +7,57 @@
   <h2>{% trans 'Task Create' %}</h2>
   <form method="post" class="task-create-form">
     {% csrf_token %}
-    {% for field in form %}
-      {% if field.name != 'status' %}
-        <div class="form-group">
-          {% if field.name == 'name' %}
-            {% trans 'Name' as name_label %}
-            <label for="id_name">{{ name_label|cut:":" }}</label>
-            <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Name' %}">
-          {% elif field.name == 'description' %}
-            {% trans 'Overview' as overview_label %}
-            <label for="id_description">{{ overview_label|cut:":" }}</label>
-            <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Overview' %}" rows="10"></textarea>
-          {% endif %}
-        </div>
-      {% endif %}
-    {% endfor %}
+
+    <!-- Поле для name -->
+    <div class="form-group">
+      {% trans 'Name' as name_label %}
+      <label for="id_name">{{ name_label|cut:":" }}</label>
+      <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Name' %}">
+    </div>
+
+    <!-- Поле для description -->
+    <div class="form-group">
+      {% trans 'Overview' as description_label %}
+      <label for="id_description">{{ description_label|cut:":" }}</label>
+      <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Overview' %}" rows="10"></textarea>
+    </div>
+
+    <!-- Поле для status -->
+    <div class="form-group">
+      {% trans 'Status' as translated_status %}
+      <label for="status">{{ translated_status|cut:":" }}</label>
+      <select name="status" id="status" class="form-control">
+        <option value="" selected disabled>---------</option>
+        {% for status in statuses %}
+          <option value="{{ status.id }}">{{ status.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Поле для executor -->
+    <div class="form-group">
+      <label for="executor">{% trans "Executor" %}</label>
+      <select name="executor" id="executor" class="form-control" required>
+        <option value="" selected disabled>---------</option>
+        {% for user in users %}
+          <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Поле для labels -->
+    <div class="form-group">
+      <label for="label">{% trans 'Labels' %}</label>
+      <select multiple id="label" name="label" class="form-control form-control-sm">
+        {% for label in labels %}
+          <option value="{{ label.id }}">{{ label.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
   </form>
 </div>
-
-
-
-
-
-
-      <div class="form-group">
-        {% trans 'Status' as translated_status %}
-<label for="status">{{ translated_status|cut:":" }}</label>
-
-
-        <select name="status" id="status" class="form-control">
-          <option value="" selected disabled>---------</option>
-          {% for status in statuses %}
-            <option value="{{ status.id }}">{{ status.name }}</option>
-          {% empty %}
-          {% endfor %}
-        </select>
-      </div>
-
-
-<div class="form-group">
-  <label for="executor">{% trans "Executor" %}</label>
-  <select name="executor" id="executor" class="form-control" required>
-    <option value="" selected disabled>---------</option>
-    {% for user in users %}
-      <option value="{{ user.id }}">{{ user.username }}</option>
-    {% endfor %}
-  </select>
-</div>
-      <label for="label">{% trans 'Labels' %}</label>
-<select multiple id="label" name="label" class="form-control form-control-sm">
-  {% for label in labels %}
-    <option value="{{ label.id }}">{{ label.name }}</option>
-  {% endfor %}
-</select>
-
-      <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
-    </form>
-  </div>
 {% endblock %}
 
 {% block css %}
