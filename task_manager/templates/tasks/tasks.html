@@ -31,7 +31,6 @@
             {{ executor_obj.get_full_name }}
           </option>
         {% empty %}
-          <option value="" disabled>{% trans 'No available executors' %}</option>
         {% endfor %}
       </select>
     </div>
@@ -70,6 +69,7 @@
         <th scope="col">{% trans 'Author' %}</th>
         <th scope="col">{% trans 'Executor' %}</th>
         <th scope="col">{% trans 'Creation date' %}</th>
+        <th scope="col">{% trans 'Actions' %}</th>
       </tr>
     </thead>
     <tbody>
@@ -79,11 +79,11 @@
           <td><a href="{% url 'task_detail' task.id %}">{{ task.name }}</a></td>
           <td>{{ task.status.name }}</td>
           <td>{{ task.author.get_full_name }}</td>
-          <td>{{ task.executor.get_full_name }}</td>
+          <td>{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
           <td>{{ task.created_at }}</td>
           <td>
-              <div><a href="{% url 'task_update' task.id %}">{% trans "Edit" %}</a></div>
-              <div><a href="{% url 'task_delete' task.id %}">{% trans "Delete" %}</a></div>
+            <div><a href="{% url 'task_update' task.id %}">{% trans "Edit" %}</a></div>
+            <div><a href="{% url 'task_delete' task.id %}">{% trans "Delete" %}</a></div>
           </td>
         </tr>
       {% endfor %}
