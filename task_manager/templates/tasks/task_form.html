@@ -46,13 +46,11 @@
 
 
 <div class="form-group">
-<label for="executor">{% trans form.executor.label|cut:":" %}</label>
-
+  <label for="executor">{% trans "Executor" %}</label>
   <select name="executor" id="executor" class="form-control" required>
     <option value="" selected disabled>---------</option>
     {% for user in users %}
       <option value="{{ user.id }}">{{ user.username }}</option>
-    {% empty %}
     {% endfor %}
   </select>
 </div>
