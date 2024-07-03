@@ -194,7 +194,7 @@ msgid "Show"
 msgstr "Показать"
 
 msgid "Only my tasks"
-msgstr "Только мои задачи"
+msgstr "Только свои задачи"
 
 msgid "Please fill out this field"
 msgstr "Пожалуйста, заполните это поле"

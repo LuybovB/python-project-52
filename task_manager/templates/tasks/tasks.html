@@ -49,9 +49,9 @@
 
     <!-- Фильтр Только свои задачи -->
     <div class="form-group mb-2">
-      <label for="own_tasks">{% trans 'Only my tasks' %}:</label>
-      <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
-    </div>
+  <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
+  <label for="own_tasks">{% trans 'Only my tasks' %}:</label>
+</div>
 
     <!-- Кнопка Показать -->
     <button type="submit" class="btn btn-primary mb-2">{% trans 'Show' %}</button>
