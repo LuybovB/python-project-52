@@ -5,7 +5,7 @@
 {% block content %}
 <div class="task-create-container">
   <h2>{% trans 'Task Create' %}</h2>
-  <form method="post" class="task-create-form">
+  <form method="post" class="task-create-form" id="task-create-form">
     {% csrf_token %}
 
     <!-- Поле для name -->
@@ -58,4 +58,17 @@
     <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
   </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Просто небольшой хак, чтобы убедиться, что все элементы загрузились
+    setTimeout(() => {
+        console.log("Elements should be loaded now.");
+    }, 3000);
+});
+</script>
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/task-create.css' %}">
 {% endblock %}
