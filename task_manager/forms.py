@@ -118,17 +118,42 @@ class StatusForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     status = forms.ModelChoiceField(
         queryset=Status.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}))
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True
+    )
     executor = forms.ModelChoiceField(
         queryset=CustomUser.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}))
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False
+    )
 
     class Meta:
         model = Task
         fields = ['name', 'description', 'status', 'executor']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите название задания',
+                'required': 'required',
+                'oninvalid': "this.setCustomValidity('Пожалуйста, заполните это поле')",
+                'oninput': "setCustomValidity('')"
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание задания',
+                'rows': 10,
+                'required': 'required',
+                'oninvalid': "this.setCustomValidity('Пожалуйста, заполните это поле')",
+                'oninput': "setCustomValidity('')"
+            }),
+        }
+
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'status', 'executor']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),  # Для соответствия эталонному проекту: {'class': 'form-select'}
+            'description': forms.Textarea(attrs={'class': 'form-control'}),  # Для соответствия эталонному проекту: {'class': 'form-select'}
         }
 
 

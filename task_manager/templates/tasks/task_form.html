@@ -11,17 +11,34 @@
     {% csrf_token %}
 
     <!-- Поле для name -->
-    <div class="form-group">
+       <div class="form-group">
       {% trans 'Name' as name_label %}
       <label for="id_name">{{ name_label|cut:":" }}</label>
-      <input type="text" id="id_name" name="name" class="form-control" placeholder="{% trans 'Name' %}">
+      <input type="text"
+             id="id_name"
+             name="name"
+             class="form-control"
+             placeholder="{% trans 'Name' %}"
+             required
+             aria-required="true"
+             oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
+             oninput="setCustomValidity('')">
     </div>
 
     <!-- Поле для description -->
     <div class="form-group">
       {% trans 'Overview' as description_label %}
       <label for="id_description">{{ description_label|cut:":" }}</label>
-      <textarea id="id_description" name="description" class="form-control" placeholder="{% trans 'Overview' %}" rows="10"></textarea>
+      <textarea id="id_description"
+                name="description"
+                class="form-control"
+                placeholder="{% trans 'Overview' %}"
+                rows="10"
+                required
+                aria-required="true"
+                oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
+                oninput="setCustomValidity('')">
+      </textarea>
     </div>
 
     <!-- Поле для status -->
@@ -34,10 +51,10 @@
     </div>
 
     <!-- Поле для executor -->
-    <div class="form-group">
-      <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
-  <select name="executor" id="id_executor" class="form-select">
-    <option value="" selected disabled>---------</option>
+<div class="form-group">
+  <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
+  <select name="executor" id="id_executor" class="form-select" required>
+    <option value="">---------</option>
     {% for user in users %}
       <option value="{{ user.id }}">{{ user.username }}</option>
     {% endfor %}
