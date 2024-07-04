@@ -282,7 +282,7 @@ def task_delete(request, pk):
 
     if request.method == 'POST':
         task.delete()
-        messages.success(request, 'Задача успешно удалена.')
+        messages.success(request, 'Задача успешно удалена')
         return redirect('task_list')
 
     return render(request, 'tasks/task_delete.html', {'task': task})

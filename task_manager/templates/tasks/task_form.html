@@ -64,14 +64,13 @@
 </div>
 
     <!-- Поле для labels -->
-    <div class="form-group">
+    <!-- Поле для labels -->
       <label for="label">{% trans 'Labels' %}</label>
-      <select id="label" name="label" class="form-control form-control-sm" multiple>
-        {% for label in labels %}
-          <option value="{{ label.id }}">{{ label.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
+<select multiple id="label" name="label" class="form-control form-control-sm">
+  {% for label in labels %}
+    <option value="{{ label.id }}">{{ label.name }}</option>
+  {% endfor %}
+</select>
 
     <button type="submit" class="btn btn-primary mt-3">{% trans 'Create' %}</button>
   </form>
