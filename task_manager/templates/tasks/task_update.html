@@ -3,37 +3,49 @@
 {% load i18n %}
 
 {% block content %}
-<div class="task-edit-container">
-  <h2>{% trans 'Edit Task' %}</h2>
-  <form method="post" class="task-edit-form">
+
+
+<div class="task-form-container">
+  <h2>{% trans 'Task Modification' %}</h2>
+  <form method="post" class="task-form">
     {% csrf_token %}
 
-    <!-- Поле для name -->
     <div class="form-group">
-      {% trans 'Name' as name_label %}
-      <label for="id_name">{{ name_label|cut:":" }}</label>
+      <label for="id_name">{% trans "Name" %}</label>
       <input type="text"
              id="id_name"
              name="name"
+             value="{{ form.name.value|default_if_none:'' }}"
              class="form-control"
              placeholder="{% trans 'Name' %}"
              required
              aria-required="true"
-             value="{{ form.name.value|default:'' }}"
              oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
              oninput="setCustomValidity('')">
       {{ form.name.errors }}
     </div>
 
+<!-- Поле для description -->
+<div class="form-group">
+  {% trans 'Overview' as description_label %}
+  <label for="id_description">{{ description_label|cut:":" }}</label>
+  <textarea id="id_description"
+            name="description"
+            class="form-control"
+            placeholder="{% trans 'Description' %}"
+            rows="10"
+            oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
+            oninput="setCustomValidity('')">{{ form.description.value|default:'' }}</textarea>
+  {{ form.description.errors }}
+</div>
     <!-- Поле для status -->
-    <div class="mb-3">
-      <label class="form-label" for="id_status">{% trans "Status" %}</label>
-      <select name="status" class="form-select" required="" id="id_status">
-        <option value="" disabled>---------</option>
+    <div class="form-group">
+      {% trans 'Status' as status_label %}
+      <label for="id_status">{{ status_label|cut:":" }}</label>
+      <select name="status" id="id_status" class="form-select" required>
+        <option value="" disabled>{{ form.status.empty_label }}</option>
         {% for status in statuses %}
-          <option value="{{ status.id }}" {% if form.status.value == status.id %}selected{% endif %}>
-            {{ status.name }}
-          </option>
+          <option value="{{ status.id }}" {% if status.id == form.status.value %}selected{% endif %}>{{ status.name }}</option>
         {% endfor %}
       </select>
       {{ form.status.errors }}
@@ -41,23 +53,34 @@
 
     <!-- Поле для executor -->
     <div class="form-group">
-      <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
+      <label for="id_executor">{% trans "Executor" %}</label>
       <select name="executor" id="id_executor" class="form-select">
-        <option value="" disabled>---------</option>
+        <option value="" selected disabled>{% trans "---------" %}</option>
         {% for user in users %}
-          <option value="{{ user.id }}" {% if form.executor.value == user.id %}selected{% endif %}>
-            {{ user.get_full_name }}
-          </option>
+          <option value="{{ user.id }}" {% if user.id == form.executor.value %}selected{% endif %}>{{ user.first_name }} {{ user.last_name }}</option>
         {% endfor %}
       </select>
       {{ form.executor.errors }}
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">{% trans 'Save Changes' %}</button>
+    <!-- Поле для labels -->
+    <div class="form-group">
+      {% trans 'Labels' as labels_label %}
+      <label for="id_labels">{{ labels_label|cut:":" }}</label>
+      <select name="labels" id="id_labels" class="form-select" multiple>
+        {% for label in labels %}
+          <option value="{{ label.id }}" {% if label.id in form.labels.value %}selected{% endif %}>{{ label.name }}</option>
+        {% endfor %}
+      </select>
+      {{ form.labels.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">{% trans 'Edit' %}</button>
   </form>
 </div>
+
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/task-edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/task-form.css' %}">
 {% endblock %}

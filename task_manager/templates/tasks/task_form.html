@@ -35,8 +35,6 @@
             class="form-control"
             placeholder="{% trans 'Overview' %}"
             rows="10"
-            required
-            aria-required="true"
             oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
             oninput="setCustomValidity('')">{{ form.description.value|default:'' }}</textarea>
   {{ form.description.errors }}

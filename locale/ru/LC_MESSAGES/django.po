@@ -198,3 +198,6 @@ msgstr "Только свои задачи"
 
 msgid "Please fill out this field"
 msgstr "Пожалуйста, заполните это поле"
+
+msgid "Task Modification"
+msgstr "Изменение задачи"

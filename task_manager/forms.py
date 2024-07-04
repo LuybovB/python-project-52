@@ -127,6 +127,17 @@ class TaskForm(forms.ModelForm):
         required=False
     )
 
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Описание',
+            'rows': 10,
+            'required': False  # Убедитесь, что здесь False, чтобы сделать поле необязательным
+        }),
+        required=False  # Это также должно быть False
+    )
+
+
     class Meta:
         model = Task
         fields = ['name', 'description', 'status', 'executor']
@@ -137,24 +148,12 @@ class TaskForm(forms.ModelForm):
                 'required': 'required',
                 'oninvalid': "this.setCustomValidity('Пожалуйста, заполните это поле')",
                 'oninput': "setCustomValidity('')"
-            }),
-            'description': forms.Textarea(attrs={
-                'class': 'form-control',
-                'placeholder': 'Введите описание задания',
-                'rows': 10,
-                'required': 'required',
-                'oninvalid': "this.setCustomValidity('Пожалуйста, заполните это поле')",
-                'oninput': "setCustomValidity('')"
-            }),
+            })
         }
 
-    class Meta:
-        model = Task
-        fields = ['name', 'description', 'status', 'executor']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),  # Для соответствия эталонному проекту: {'class': 'form-select'}
-            'description': forms.Textarea(attrs={'class': 'form-control'}),  # Для соответствия эталонному проекту: {'class': 'form-select'}
-        }
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
 
 
 class LabelForm(forms.ModelForm):

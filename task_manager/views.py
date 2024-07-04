@@ -245,12 +245,13 @@ def task_create(request):
 
 
 @login_required
+
 def task_update(request, pk):
     task = get_object_or_404(Task, pk=pk)
     statuses = Status.objects.all()
     users = CustomUser.objects.all()
+    labels = Label.objects.all()
 
-    # Убираем проверку на авторство задачи
     if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
@@ -260,9 +261,13 @@ def task_update(request, pk):
     else:
         form = TaskForm(instance=task)
 
-    return render(request,
-                  'tasks/task_form.html',
-                  {'form': form, 'statuses': statuses, 'users': users})
+    return render(request, 'tasks/task_update.html', {
+        'form': form,
+        'statuses': statuses,
+        'users': users,
+        'labels': labels,
+        'task': task
+    })
 
 
 @login_required
