@@ -189,11 +189,11 @@ def delete_status(request, pk):
                       {'status': status})
 
 
-@login_required
 def task_list(request):
     tasks = Task.objects.all()
     statuses = Status.objects.all()
-    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
+    executors = CustomUser.objects.filter(
+        executor_tasks__isnull=False).distinct()
     labels = Label.objects.all()
 
     status_id = request.GET.get('status')
@@ -206,10 +206,9 @@ def task_list(request):
 
     label_id = request.GET.get('label')
     if label_id:
-        tasks = tasks.filter(labels__id=label_id)
+        tasks = tasks.filter(label__id=label_id)
 
-    own_tasks = request.GET.get('own_tasks')
-    if own_tasks:
+    if 'own_tasks' in request.GET:
         tasks = tasks.filter(author=request.user)
 
     return render(request, 'tasks/tasks.html', {
@@ -218,7 +217,6 @@ def task_list(request):
         'executors': executors,
         'labels': labels,
     })
-
 
 @login_required
 def task_create(request):
@@ -289,7 +287,6 @@ def task_delete(request, pk):
     return render(request, 'tasks/task_delete.html', {'task': task})
 
 
-
 @login_required
 def label_create(request):
     if request.method == 'POST':
@@ -301,6 +298,7 @@ def label_create(request):
     else:
         form = LabelForm()
     return render(request, 'labels/label_create.html', {'form': form})
+
 
 def label_delete(request, pk):
     label = get_object_or_404(Label, pk=pk)

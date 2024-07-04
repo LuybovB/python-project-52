@@ -36,12 +36,13 @@
     </div>
 
     <!-- Фильтр Метка -->
+    <!-- Фильтр Метка -->
     <div class="form-group mb-2">
       <label class="form-label" for="id_label">{% trans 'Label' %}</label>
       <select name="label" class="form-select mr-3 ml-2 {% if request.GET.label or request.GET.label == "" %}is-valid{% endif %}" id="id_label">
         <option value="" {% if request.GET.label == "" or not request.GET.label %}selected{% endif %}>---------</option>
         {% for label in labels %}
-          <option value="{{ label_obj.id }}" {% if request.GET.label == label_obj.id|stringformat:"s" %}selected{% endif %}>
+          <option value="{{ label.id }}" {% if request.GET.label == label.id|stringformat:"s" %}selected{% endif %}>
             {{ label.name }}
           </option>
         {% empty %}

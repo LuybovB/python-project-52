@@ -1,10 +1,63 @@
-% load i18n %}
-{% block content %}
-  <h2>{% trans 'Edit Tas' %}</h2>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
 
-  <form method="post">
+{% block content %}
+<div class="task-edit-container">
+  <h2>{% trans 'Edit Task' %}</h2>
+  <form method="post" class="task-edit-form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">{% trans 'Save Changes' %}</button>
+
+    <!-- Поле для name -->
+    <div class="form-group">
+      {% trans 'Name' as name_label %}
+      <label for="id_name">{{ name_label|cut:":" }}</label>
+      <input type="text"
+             id="id_name"
+             name="name"
+             class="form-control"
+             placeholder="{% trans 'Name' %}"
+             required
+             aria-required="true"
+             value="{{ form.name.value|default:'' }}"
+             oninvalid="this.setCustomValidity('{% trans 'Please fill out this field' %}')"
+             oninput="setCustomValidity('')">
+      {{ form.name.errors }}
+    </div>
+
+    <!-- Поле для status -->
+    <div class="mb-3">
+      <label class="form-label" for="id_status">{% trans "Status" %}</label>
+      <select name="status" class="form-select" required="" id="id_status">
+        <option value="" disabled>---------</option>
+        {% for status in statuses %}
+          <option value="{{ status.id }}" {% if form.status.value == status.id %}selected{% endif %}>
+            {{ status.name }}
+          </option>
+        {% endfor %}
+      </select>
+      {{ form.status.errors }}
+    </div>
+
+    <!-- Поле для executor -->
+    <div class="form-group">
+      <label class="form-label" for="id_executor">{% trans "Executor" %}</label>
+      <select name="executor" id="id_executor" class="form-select">
+        <option value="" disabled>---------</option>
+        {% for user in users %}
+          <option value="{{ user.id }}" {% if form.executor.value == user.id %}selected{% endif %}>
+            {{ user.get_full_name }}
+          </option>
+        {% endfor %}
+      </select>
+      {{ form.executor.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">{% trans 'Save Changes' %}</button>
   </form>
+</div>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/task-edit.css' %}">
 {% endblock %}
