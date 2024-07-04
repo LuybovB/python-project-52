@@ -189,11 +189,11 @@ def delete_status(request, pk):
                       {'status': status})
 
 
+
 def task_list(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.select_related('status', 'executor').prefetch_related('label').all()
     statuses = Status.objects.all()
-    executors = CustomUser.objects.filter(
-        executor_tasks__isnull=False).distinct()
+    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
     labels = Label.objects.all()
 
     status_id = request.GET.get('status')
@@ -210,6 +210,11 @@ def task_list(request):
 
     if 'own_tasks' in request.GET:
         tasks = tasks.filter(author=request.user)
+
+    logger.debug('Filtered tasks: %s', list(tasks.values('id', 'name')))
+    logger.debug('Filtered status ID: %s', status_id)
+    logger.debug('Filtered executor ID: %s', executor_id)
+    logger.debug('Filtered label ID: %s', label_id)
 
     return render(request, 'tasks/tasks.html', {
         'tasks': tasks,
@@ -245,7 +250,6 @@ def task_create(request):
 
 
 @login_required
-
 def task_update(request, pk):
     task = get_object_or_404(Task, pk=pk)
     statuses = Status.objects.all()
@@ -255,9 +259,13 @@ def task_update(request, pk):
     if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            form.save_m2m()
+            logger.debug("Selected labels: %s", form.cleaned_data['label'])
             messages.success(request, 'Задача успешно обновлена.')
             return redirect('task_list')
+        else:
+            logger.error("Form errors: %s", form.errors)
     else:
         form = TaskForm(instance=task)
 

@@ -63,16 +63,17 @@
       {{ form.executor.errors }}
     </div>
 
+
     <!-- Поле для labels -->
     <div class="form-group">
       {% trans 'Labels' as labels_label %}
       <label for="id_labels">{{ labels_label|cut:":" }}</label>
-      <select name="labels" id="id_labels" class="form-select" multiple>
+      <select name="label" id="id_labels" class="form-select" multiple>
         {% for label in labels %}
-          <option value="{{ label.id }}" {% if label.id in form.labels.value %}selected{% endif %}>{{ label.name }}</option>
+          <option value="{{ label.id }}" {% if label.id in form.label.value %}selected{% endif %}>{{ label.name }}</option>
         {% endfor %}
       </select>
-      {{ form.labels.errors }}
+      {{ form.label.errors }}
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">{% trans 'Edit' %}</button>

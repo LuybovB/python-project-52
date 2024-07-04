@@ -137,9 +137,15 @@ class TaskForm(forms.ModelForm):
         required=False  # Это также должно быть False
     )
 
+    label = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        widget=forms.SelectMultiple,
+        required=False
+    )
+
     class Meta:
         model = Task
-        fields = ['name', 'description', 'status', 'executor']
+        fields = ['name', 'description', 'status', 'executor', 'label']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
