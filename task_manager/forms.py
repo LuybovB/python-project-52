@@ -137,7 +137,6 @@ class TaskForm(forms.ModelForm):
         required=False  # Это также должно быть False
     )
 
-
     class Meta:
         model = Task
         fields = ['name', 'description', 'status', 'executor']

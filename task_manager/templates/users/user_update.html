@@ -1,53 +1,27 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
 {% block content %}
+
 <div class="container mt-4">
-    <h1 class="display-4">{% trans 'Edit Task' %}</h1>
-    <form method="POST" class="task-edit-form">
+    <h1 class="display-4">{% trans 'Edit user' %}</h1>
+    <form method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            {% trans 'Name' as name_label %}
-            <label for="id_name">{{ name_label }}</label>
-            <input type="text"
-                   id="id_name"
-                   name="name"
-                   class="form-control"
-                   placeholder="{% trans 'Name' %}"
-                   required
-                   value="{{ task.name }}"
-                   oninput="setCustomValidity('')">
-            {{ form.name.errors }}
-        </div>
-        <div class="form-group">
-            <label for="id_status">{% trans "Status" %}</label>
-            <select name="status" id="id_status" class="form-select" required>
-                <option value="" disabled>---------</option>
-                {% for status in statuses %}
-                    <option value="{{ status.id }}" {% if task.status.id == status.id %}selected{% endif %}>
-                        {{ status.name }}
-                    </option>
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
                 {% endfor %}
-            </select>
-            {{ form.status.errors }}
-        </div>
-        <div class="form-group">
-            <label for="id_executor">{% trans "Executor" %}</label>
-            <select name="executor" id="id_executor" class="form-select">
-                <option value="" disabled>---------</option>
-                {% for user in users %}
-                    <option value="{{ user.id }}" {% if task.executor.id == user.id %}selected{% endif %}>
-                        {{ user.get_full_name }}
-                    </option>
-                {% endfor %}
-            </select>
-            {{ form.executor.errors }}
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">{% trans 'Save Changes' %}</button>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">{% trans 'Edit' %}</button>
     </form>
 </div>
-{% endblock %}
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/task-edit.css' %}">
 {% endblock %}
