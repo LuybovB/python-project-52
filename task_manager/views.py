@@ -262,7 +262,7 @@ def task_update(request, pk):
             task = form.save(commit=False)
             form.save_m2m()
             logger.debug("Selected labels: %s", form.cleaned_data['label'])
-            messages.success(request, 'Задача успешно обновлена.')
+            messages.success(request, 'Задача успешно изменена')
             return redirect('task_list')
         else:
             logger.error("Form errors: %s", form.errors)
