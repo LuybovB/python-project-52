@@ -50,15 +50,17 @@
       </select>
     </div>
 
-    <!-- Фильтр Только свои задачи -->
-    <div class="form-group mb-2">
-      <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
-      <label for="own_tasks" class="form-label {% if request.GET.own_tasks != None %}is-valid{% endif %}">{% trans 'Only my tasks' %}</label>
-    </div>
+<!-- Фильтр Только свои задачи -->
+<div class="form-group mb-2">
+  <input type="checkbox" name="own_tasks" id="own_tasks" {% if request.GET.own_tasks %}checked{% endif %}>
+  <label for="own_tasks" class="form-label {% if request.GET.own_tasks != None %}is-valid{% endif %}">{% trans 'Only my tasks' %}</label>
+</div>
 
     <!-- Кнопка Показать -->
-    <button type="submit" class="btn btn-primary mb-2">{% trans 'Show' %}</button>
-  </form>
+<!-- Кнопка отправки формы фильтрации -->
+<div class="form-group mb-2">
+  <button type="submit" class="btn btn-primary">{% trans 'Show' %}</button>
+</div>
 
   <table class="table table-striped mt-4">
     <thead>
@@ -69,7 +71,6 @@
         <th scope="col">{% trans 'Author' %}</th>
         <th scope="col">{% trans 'Executor' %}</th>
         <th scope="col">{% trans 'Creation date' %}</th>
-        <th scope="col">{% trans 'Actions' %}</th>
       </tr>
     </thead>
     <tbody>

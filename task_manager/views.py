@@ -13,6 +13,7 @@ import logging
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -192,8 +193,7 @@ def delete_status(request, pk):
 def task_list(request):
     tasks = Task.objects.all()
     statuses = Status.objects.all()
-    executors = CustomUser.objects.filter(
-        executor_tasks__isnull=False).distinct()
+    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
     labels = Label.objects.all()
 
     status_id = request.GET.get('status')
@@ -206,9 +206,10 @@ def task_list(request):
 
     label_id = request.GET.get('label')
     if label_id:
-        tasks = tasks.filter(label__id=label_id)
+        tasks = tasks.filter(labels__id=label_id)
 
-    if 'own_tasks' in request.GET:
+    own_tasks = request.GET.get('own_tasks')
+    if own_tasks:
         tasks = tasks.filter(author=request.user)
 
     return render(request, 'tasks/tasks.html', {
