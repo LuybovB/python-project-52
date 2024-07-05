@@ -189,7 +189,6 @@ def delete_status(request, pk):
                       {'status': status})
 
 
-
 def task_list(request):
     tasks = Task.objects.select_related('status', 'executor').prefetch_related('label').all()
     statuses = Status.objects.all()
@@ -259,13 +258,9 @@ def task_update(request, pk):
     if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            task = form.save(commit=False)
-            form.save_m2m()
-            logger.debug("Selected labels: %s", form.cleaned_data['label'])
-            messages.success(request, 'Задача успешно изменена')
+            form.save()
+            messages.success(request, 'Задача успешно обновлена.')
             return redirect('task_list')
-        else:
-            logger.error("Form errors: %s", form.errors)
     else:
         form = TaskForm(instance=task)
 
