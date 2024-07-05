@@ -112,7 +112,8 @@ class StatusForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StatusForm, self).__init__(*args, **kwargs)
         if self.instance and self.instance.name:
-            self.fields['name'].widget.attrs['placeholder'] = self.instance.name
+            self.fields['name'].widget.attrs['placeholder']\
+                = self.instance.name
 
 
 class TaskForm(forms.ModelForm):
@@ -132,9 +133,9 @@ class TaskForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': 'Описание',
             'rows': 10,
-            'required': False  # Убедитесь, что здесь False, чтобы сделать поле необязательным
+            'required': False
         }),
-        required=False  # Это также должно быть False
+        required=False
     )
 
     label = forms.ModelMultipleChoiceField(
@@ -151,7 +152,8 @@ class TaskForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Введите название задания',
                 'required': 'required',
-                'oninvalid': "this.setCustomValidity('Пожалуйста, заполните это поле')",
+                'oninvalid': "this.setCustomValidity("
+                             "'Пожалуйста, заполните это поле')",
                 'oninput': "setCustomValidity('')"
             })
         }

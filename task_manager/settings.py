@@ -122,7 +122,8 @@ FIXTURE_DIRS = (
    'task_manager/fixtures/',
 )
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = \
+    'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'task_manager/templates/tasks/static',

@@ -13,7 +13,6 @@ import logging
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
-from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -35,17 +34,10 @@ def register(request):
             messages.success(request, 'Пользователь успешно зарегистрирован')
             user.is_active = True
             user.save()
-            # Удалите следующие строки, чтобы предотвратить автоматический вход пользователя
-            # username = form.cleaned_data.get('username')
-            # password = form.cleaned_data.get('password1')
-            # user = authenticate(request, username=username, password=password)
-            # if user is not None:
-            #     login(request, user)
             return redirect('login')  # Перенаправление на страницу входа
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
-
 
 
 def user_list(request):
@@ -79,7 +71,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, gettext_lazy('Вы разлогинены'))
-    next_page = reverse_lazy('root')  # Указать желаемый URL вместо 'root'
+    next_page = reverse_lazy('root')
     return redirect(next_page)
 
 
@@ -137,7 +129,8 @@ def list_statuses(request):
 
 
 def require_login(request):
-    messages.error(request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+    messages.error(request,
+                   'Вы не авторизованы! Пожалуйста, выполните вход.')
     return redirect('login')
 
 
@@ -191,9 +184,14 @@ def delete_status(request, pk):
 
 
 def task_list(request):
-    tasks = Task.objects.select_related('status', 'executor').prefetch_related('label').all()
+    tasks = Task.objects.select_related(''
+                                        'status',
+                                        'executor'
+                                        ).prefetch_related(
+        'label').all()
     statuses = Status.objects.all()
-    executors = CustomUser.objects.filter(executor_tasks__isnull=False).distinct()
+    executors = CustomUser.objects.filter(
+        executor_tasks__isnull=False).distinct()
     labels = Label.objects.all()
 
     status_id = request.GET.get('status')
@@ -223,12 +221,14 @@ def task_list(request):
         'labels': labels,
     })
 
+
 @login_required
 def task_create(request):
     form = TaskForm(request.POST or None)
     labels = Label.objects.all()
     if request.method == 'POST':
-        logger.info('Received POST request with data: %s', request.POST)
+        logger.info('Received POST request with data: %s',
+                    request.POST)
         if form.is_valid():
             logger.info('Form is valid')
             task = form.save(commit=False)
@@ -285,12 +285,14 @@ def task_delete(request, pk):
     task = get_object_or_404(Task, pk=pk)
 
     if request.user != task.author:
-        messages.error(request, 'Задачу может удалить только ее автор')
+        messages.error(request,
+                       'Задачу может удалить только ее автор')
         return redirect('task_list')
 
     if request.method == 'POST':
         task.delete()
-        messages.success(request, 'Задача успешно удалена')
+        messages.success(request,
+                         'Задача успешно удалена')
         return redirect('task_list')
 
     return render(request, 'tasks/task_delete.html', {'task': task})
@@ -306,7 +308,8 @@ def label_create(request):
             return redirect('labels-list')
     else:
         form = LabelForm()
-    return render(request, 'labels/label_create.html', {'form': form})
+    return render(request,
+                  'labels/label_create.html', {'form': form})
 
 
 def label_delete(request, pk):
@@ -314,14 +317,16 @@ def label_delete(request, pk):
     if request.method == 'POST':
         if label.label.exists():
             messages.error(request,
-                           'Невозможно удалить метку, потому что она используется')
+                           'Невозможно удалить метку,'
+                           ' потому что она используется')
             return redirect('labels-list')
         else:
             label.delete()
             messages.success(request, 'Метка успешно удалена.')
             return redirect('labels-list')
     else:
-        return render(request, 'labels/label_delete.html', {'label': label})
+        return render(request, 'labels/label_delete.html',
+                      {'label': label})
 
 
 def label_update(request, pk):
@@ -343,4 +348,5 @@ def label_update(request, pk):
 
 def labels_list(request):
     labels = Label.objects.all()
-    return render(request, 'labels/labels.html', {'labels': labels})
+    return render(request, 'labels/labels.html',
+                  {'labels': labels})
