@@ -16,4 +16,5 @@ poetry.lock
 users_fixture.jsonbin/
 node_modules/
 staticfiles/
-staticfiles/
+bin/
+
