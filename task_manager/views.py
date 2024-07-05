@@ -259,7 +259,7 @@ def task_update(request, pk):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Задача успешно обновлена.')
+            messages.success(request, 'Задача успешно изменена')
             return redirect('task_list')
     else:
         form = TaskForm(instance=task)
