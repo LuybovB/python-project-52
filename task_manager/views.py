@@ -109,7 +109,7 @@ def user_delete_view(request, pk):
 
     if user != request.user:
         messages.error(request,
-                       'У вас нет прав для удаления другого пользователя.')
+                       'У вас нет прав для изменения другого пользователя.')
         return redirect('user-list')
 
     if request.method == 'GET':
@@ -284,7 +284,7 @@ def task_delete(request, pk):
     task = get_object_or_404(Task, pk=pk)
 
     if request.user != task.author:
-        messages.error(request, 'Задачу может удалить только ее автор.')
+        messages.error(request, 'Задачу может удалить только ее автор')
         return redirect('task_list')
 
     if request.method == 'POST':
