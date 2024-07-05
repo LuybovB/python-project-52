@@ -314,8 +314,7 @@ def label_delete(request, pk):
     if request.method == 'POST':
         if label.label.exists():
             messages.error(request,
-                           'Эту метку нельзя удалить,'
-                           ' так как она связана с задачей.')
+                           'Невозможно удалить метку, потому что она используется')
             return redirect('labels-list')
         else:
             label.delete()
