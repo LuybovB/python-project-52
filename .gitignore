@@ -13,4 +13,7 @@ build.sh
 package-lock.json
 package.json
 poetry.lock
-users_fixture.json
+users_fixture.jsonbin/
+node_modules/
+staticfiles/
+staticfiles/
