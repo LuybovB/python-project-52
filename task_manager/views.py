@@ -173,17 +173,18 @@ def update_status(request, pk):
 @login_required
 def delete_status(request, pk):
     status = get_object_or_404(Status, pk=pk)
-    if status.tasks.exists():
-        messages.error(request,
-                       'Невозможно удалить статус,'
-                       ' потому что он используется')
-        return redirect('list_statuses')
-
     if request.method == 'POST':
-        status.delete()
-        messages.success(request, 'Статус успешно удален')
-        return redirect('list_statuses')
+        if status.tasks.exists():
+            messages.error(request,
+                           'Невозможно удалить статус,'
+                           ' потому что он используется')
+            return redirect('list_statuses')
+        else:
+            status.delete()
+            messages.success(request, 'Статус успешно удален')
+            return redirect('list_statuses')
     else:
+        # Перенаправление на страницу подтверждения удаления
         return render(request,
                       'statuses/delete_status.html',
                       {'status': status})
