@@ -1,10 +1,11 @@
 from django.urls import path
-from . import views
+from .views import labels_list, label_create, label_update, label_delete
 
+app_name = 'labels'
 
 urlpatterns = [
-    path('labels/', views.labels_list, name='labels-list'),
-    path('labels/create/', views.label_create, name='label_create'),
-    path('labels/<int:pk>/update/', views.label_update, name='label_update'),
-    path('labels/<int:pk>/delete/', views.label_delete, name='label_delete'),
+    path('', labels_list, name='list'),
+    path('create/', label_create, name='create'),
+    path('<int:pk>/update/', label_update, name='update'),
+    path('<int:pk>/delete/', label_delete, name='delete'),
 ]
