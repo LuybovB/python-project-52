@@ -17,4 +17,5 @@ users_fixture.jsonbin/
 node_modules/
 staticfiles/
 bin/
-
+db.sqlite3
+git rm --cached db.sqlite3

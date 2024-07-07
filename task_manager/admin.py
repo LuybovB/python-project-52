@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Status
+from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -24,5 +24,3 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-
-admin.site.register(Status)
