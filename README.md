@@ -2,6 +2,7 @@
 
 [![Actions Status](https://github.com/LuybovB/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/LuybovB/python-project-52/actions)
 
+[![Test Status](https://github.com/LuybovB/python-project-52/actions/workflows/run_tests.yml/badge.svg)](https://github.com/LuybovB/python-project-52/actions/workflows/run_tests.yml)
 
 ### Описание:
 
