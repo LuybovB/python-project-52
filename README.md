@@ -35,7 +35,7 @@ git clone https://github.com/tmvfb/python-project-52.git
 cd python-project-52.git
 make install
 
-#### Настройки(переменные окружения)
+### Настройки(переменные окружения):
 
 Example .env file
 
