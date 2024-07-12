@@ -37,11 +37,11 @@ make install
 
 #### Настройки(переменные окружения)
 
-# Example .env file
+Example .env file
 
-DATABASE_URL=your_database_connection_url
-SECRET_KEY=your_django_secret_key
-ROLLBAR=your_rollbar_access_token
+* DATABASE_URL=your_database_connection_url
+* SECRET_KEY=your_django_secret_key
+* ROLLBAR=your_rollbar_access_token
 
 ### Демонтрация проекта:
 https://python-project-52-rm4g.onrender.com/
